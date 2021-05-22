@@ -14,7 +14,9 @@ app.use(cookieParser());
 
 // ROUTER =====================
 const HOTEL_SEARCH_ROUTE = require("./routes/Hotel.js");
+const HOTEL_POSTER_ROUTE = require("./routes/BecomePoster.js");
 app.use("/hotel", HOTEL_SEARCH_ROUTE);
+app.use("/post", HOTEL_POSTER_ROUTE);
 // ROOT ROUTES ================
 
 app.get("/", (req, res) => {
