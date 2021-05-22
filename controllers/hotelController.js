@@ -21,7 +21,9 @@ const hotel_search_index = async (req, res) => {
       searchedCity: cityname,
       filteredData: filteredData,
     };
-    res.render("search/search.ejs", { renderDataObj: renderDataObj });
+    res
+      .status(200)
+      .render("search/search.ejs", { renderDataObj: renderDataObj });
   } catch (error) {
     console.error(error);
   }

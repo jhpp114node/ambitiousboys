@@ -11,14 +11,14 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/search/search.css" />
+    <link rel="stylesheet" href="/css/search/search.css" />
   </head>
   <body>
     <main class="hotel_search_container">
       <div class="left_container">
-        <h3 class="searched_city">
+        <h2 class="searched_city">
           Searched city: <%=renderDataObj.searchedCity%>
-        </h3>
+        </h2>
         <small
           ><%=renderDataObj.filteredData.length %> + hotels had been
           found</small
@@ -29,7 +29,7 @@
           <% renderDataObj.filteredData.forEach( (eachHotel) => { %>
           <div class="fetched_data">
             <!-- Image container -->
-            <div class="fetched_data_img">
+            <div class="fetched_data_img" image-id="<%=eachHotel.id%>">
               <i class="fas fa-chevron-circle-left leftArrow imgController"></i>
               <img class="hotelSearch_image"
               src=<%=`https://photo.hotellook.com/image_v2/limit/h${eachHotel.id}_${0}/280/180.jpg`%>
@@ -61,6 +61,6 @@
       </div>
       <div class="right_container"></div>
     </main>
-    <script src="js/search/search.js" defer></script>
+    <script src="/js/search/search.js" defer></script>
   </body>
 </html>
