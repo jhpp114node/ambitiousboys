@@ -5,136 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hotel-BNB</title>
+    <!-- Bootstrap CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    />
     <!-- Fontawesome CDN -->
-    <link<!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Hotel-BNB</title>
-        <!-- Fontawesome CDN -->
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-        />
-        <!-- Custom CSS -->
-        <link rel="stylesheet" href="css/root/index.css" />
-        <!-- Date picker -->
-        <!-- Datepicker -->
-        <link
-          rel="stylesheet"
-          href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
-        />
-        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <script>
-          $(function () {
-            $(function () {
-              var dateFormat = "mm/dd/yy",
-                from = $("#checkin__date")
-                  .datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    numberOfMonths: 1,
-                    minDate: 0,
-                  })
-                  .on("change", function () {
-                    to.datepicker("option", "minDate", getDate(this));
-                  }),
-                to = $("#checkout__date")
-                  .datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    numberOfMonths: 1,
-                    minDate: 1,
-                  })
-                  .on("change", function () {
-                    from.datepicker("option", "maxDate", getDate(this));
-                  });
-    
-              function getDate(element) {
-                var date;
-                try {
-                  date = $.datepicker.parseDate(dateFormat, element.value);
-                } catch (error) {
-                  date = null;
-                }
-    
-                return date;
-              }
-            });
-          });
-        </script>
-      </head>
-      <body>
-        <header class="index_header">
-          <nav class="navigation">
-            <div class="nav_logo">
-              <h2><i class="fas fa-h-square"></i> Hotel-BNB</h2>
-            </div>
-            <div class="nav_sub_menu">
-              <ul class="nav_sub_menu">
-                <li>About Hotel-BNB</li>
-                <li>Become a poster</li>
-                <li>
-                  <div class="user_info">
-                    <i class="fas fa-bars"></i>
-                    <i class="far fa-user"></i>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </nav>
-          <!-- Search section -->
-          <div class="search_feature">
-            <form action="/" class="search_form">
-              <div class="search_options">
-                <div>
-                  <label for="">Location</label>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Where are you going?"
-                  name="location"
-                />
-              </div>
-              <div class="search_options">
-                <div>
-                  <label for="">Check in (optional)</label>
-                </div>
-                <input
-                  readonly
-                  type="text"
-                  placeholder="Add dates"
-                  id="checkin__date"
-                  name="checkin_date"
-                />
-              </div>
-              <div class="search_options">
-                <div>
-                  <label for="">Check out (optional)</label>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Add dates"
-                  id="checkout__date"
-                  name="checkout_date"
-                />
-              </div>
-              <!-- Button -->
-              <div>
-                <button>
-                  <i class="fas fa-search-location"></i>
-                </button>
-              </div>
-            </form>
-          </div>
-          <h1>Let's go some places</h1>
-        </header>
-      </body>
-    </html>
-    
+
+    <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
@@ -148,7 +26,7 @@
     />
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <!-- <script>
+    <script>
       $(function () {
         $(function () {
           var dateFormat = "mm/dd/yy",
@@ -185,18 +63,200 @@
           }
         });
       });
-    </script> -->
+    </script>
   </head>
   <body>
-    <div id="top_div">
-      <div id="top_div_left">
-        <h1 class="h1_class">
-          Hosting<br />
-          makes Hotel-bnb, <br />
-          Hotel-bnb
-        </h1>
+    <header class="index_header">
+      <nav class="navigation">
+        <div class="nav_logo">
+          <h2><i class="fas fa-h-square"></i> Hotel-BNB</h2>
+        </div>
+        <div class="nav_sub_menu">
+          <ul class="nav_sub_menu">
+            <li>About Hotel-BNB</li>
+            <li>Become a poster</li>
+            <li>
+              <div class="user_info">
+                <i class="fas fa-bars"></i>
+                <i class="far fa-user"></i>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <!-- Search section -->
+      <div class="search_feature">
+        <form action="/" method="POST" class="search_form">
+          <div class="searchbar_container">
+            <div class="search_options">
+              <div>
+                <label for="">Location</label>
+              </div>
+              <input
+                type="text"
+                placeholder="Where are you going?"
+                name="location"
+                id="location_search_term"
+                required
+              />
+            </div>
+            <div class="search_options">
+              <div>
+                <label for="">Check in (optional)</label>
+              </div>
+              <input
+                readonly
+                type="text"
+                placeholder="Add dates"
+                id="checkin__date"
+                name="checkin_date"
+              />
+            </div>
+            <div class="search_options">
+              <div>
+                <label for="">Check out (optional)</label>
+              </div>
+              <input
+                type="text"
+                placeholder="Add dates"
+                id="checkout__date"
+                name="checkout_date"
+              />
+            </div>
+            <!-- Button -->
+            <div class="search_btn_container">
+              <button class="submitBtn">
+                <i class="fas fa-search-location"></i>
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
-      <div id="top_div_right">background2</div>
-    </div>
+      <!-- More Btn -->
+      <a href="#about"><i class="fas fa-angle-down down"> </i></a>
+    </header>
+
+    <!-- About -->
+    <section id="about" class="about_container">
+      <h2 class="about_title">About Hotel-BNB</h2>
+      <div class="container">
+        <div class="row">
+          <!-- 1st card -->
+          <div class="col-md-3 card d-flex pb-3" style="width: 18rem">
+            <img
+              src="https://images.unsplash.com/photo-1586769852836-bc069f19e1b6?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
+              class="card-img-top"
+              alt="image of searching something"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Find hotels</h5>
+              <p class="card-text">
+                Type your destination city to discover the hotels that are
+                waiting for you!
+              </p>
+            </div>
+          </div>
+          <!-- end of 1st card -->
+
+          <!-- 2nd card -->
+          <div class="col-md-3 card d-flex pb-3" style="width: 18rem">
+            <img
+              src="https://images.unsplash.com/photo-1502772066658-3006ff41449b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1456&q=80"
+              class="card-img-top"
+              alt="image of searching something"
+            />
+            <div class="card-body">
+              <h5 class="card-title">View relevant city information</h5>
+              <p class="card-text">
+                We propvides you a weather, Air quality, and covid rate
+                information with a small video clip of the city!
+              </p>
+            </div>
+          </div>
+          <!-- end of 2nd card -->
+
+          <!-- 3rd card -->
+          <div class="col-md-3 card d-flex pb-3" style="width: 18rem">
+            <img
+              src="https://images.unsplash.com/photo-1556741533-6e6a62bd8b49?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
+              class="card-img-top"
+              alt="image of searching something"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Become a poster</h5>
+              <p class="card-text">
+                Post your hotel with simple steps! <br />
+                Simple register and login to post your hotel.
+              </p>
+            </div>
+          </div>
+          <!-- end of 3rd card -->
+
+          <!-- 4th card -->
+          <div class="col-md-3 card d-flex pb-3" style="width: 18rem">
+            <img
+              src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
+              class="card-img-top"
+              alt="image of computer with admin"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Admin</h5>
+              <p class="card-text">
+                View statistical data of new posted hotel.
+              </p>
+            </div>
+          </div>
+          <!-- end of 4th card -->
+        </div>
+      </div>
+    </section>
+    <!-- footer -->
+    <footer class="footer">
+      <div class="footer_section_container">
+        <section class="faq">
+          <a href="/faq"><h6>FAQ</h6></a>
+        </section>
+        <section class="about_developer">
+          <a href="/about_developer"><h6>About developer</h6></a>
+        </section>
+        <section class="api_used">
+          <a href="/about_api"><h6>About API</h6></a>
+        </section>
+        <section class="image_used">
+          <a href="/about_images"><h6>About Images</h6></a>
+        </section>
+      </div>
+      <hr class="footer_line" />
+      <div class="footer_bottom">
+        <div class="footer_left_container">
+          <p>
+            <i class="fas fa-h-square"></i> Hotel-BNB
+            <span>TLG-Amazon SDE Apprenticeship &copy; 2021 May</span>
+          </p>
+          <div>
+            <a href="#"><i class="fab fa-github"></i> to view source code</a>
+          </div>
+        </div>
+        <div class="footer_right_container">
+          <a href="#index_intro">
+            <i class="fas fa-angle-up up"></i>
+          </a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      function activatePlaceSearch() {
+        let input = document.querySelector("#location_search_term");
+        let option = {
+          types: ["(cities)"],
+        };
+        var autocomplete = new google.maps.places.Autocomplete(input, option);
+      }
+    </script>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIYpSNFQeK5e5LluHsADjpRLnZeK78YKc&callback=activatePlaceSearch&libraries=places&v=weekly"
+    ></script>
   </body>
 </html>

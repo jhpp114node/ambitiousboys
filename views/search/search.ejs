@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hotel-BNB Search</title>
+    <!-- Fontawesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/search/search.css" />
+  </head>
+  <body>
+    <main class="hotel_search_container">
+      <div class="left_container">
+        <h3 class="searched_city">
+          Searched city: <%=renderDataObj.searchedCity%>
+        </h3>
+        <small
+          ><%=renderDataObj.filteredData.length %> + hotels had been
+          found</small
+        >
+        <br />
+        <!-- Data fetched from API -->
+        <div class="fetched_data_container">
+          <% renderDataObj.filteredData.forEach( (eachHotel) => { %>
+          <div class="fetched_data">
+            <!-- Image container -->
+            <div class="fetched_data_img">
+              <i class="fas fa-chevron-circle-left leftArrow imgController"></i>
+              <img class="hotelSearch_image"
+              src=<%=`https://photo.hotellook.com/image_v2/limit/h${eachHotel.id}_${0}/280/180.jpg`%>
+              alt="Hotel Image">
+              <i
+                class="fas fa-chevron-circle-right rightArrow imgController"
+              ></i>
+            </div>
+            <div class="fetched_data_desc">
+              <small class="hotel_desc_fullname"><%=eachHotel.fullName%></small>
+              <div class="fetched_data_header">
+                <h3><%=eachHotel.label%></h3>
+              </div>
+              <div class="fetched_data_detail">
+                <a class="hotel_desc_btn" href="">View Detail</a>
+              </div>
+              <div class="hotel_desc_footer">
+                <i class="fas fa-star hotel_score_icon">
+                  <span class="hotel_score_text"
+                    >Rate: <%=(eachHotel._score / 100000).toFixed(3)%></span
+                  >
+                </i>
+              </div>
+            </div>
+          </div>
+          <hr class="each_hotel_divider" />
+          <% }) %>
+        </div>
+      </div>
+      <div class="right_container"></div>
+    </main>
+    <script src="js/search/search.js" defer></script>
+  </body>
+</html>
