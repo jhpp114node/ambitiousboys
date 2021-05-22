@@ -6,12 +6,140 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hotel-BNB</title>
     <!-- Fontawesome CDN -->
-    <link
+    <link<!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Hotel-BNB</title>
+        <!-- Fontawesome CDN -->
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        />
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="css/root/index.css" />
+        <!-- Date picker -->
+        <!-- Datepicker -->
+        <link
+          rel="stylesheet"
+          href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+        />
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+          $(function () {
+            $(function () {
+              var dateFormat = "mm/dd/yy",
+                from = $("#checkin__date")
+                  .datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    numberOfMonths: 1,
+                    minDate: 0,
+                  })
+                  .on("change", function () {
+                    to.datepicker("option", "minDate", getDate(this));
+                  }),
+                to = $("#checkout__date")
+                  .datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    numberOfMonths: 1,
+                    minDate: 1,
+                  })
+                  .on("change", function () {
+                    from.datepicker("option", "maxDate", getDate(this));
+                  });
+    
+              function getDate(element) {
+                var date;
+                try {
+                  date = $.datepicker.parseDate(dateFormat, element.value);
+                } catch (error) {
+                  date = null;
+                }
+    
+                return date;
+              }
+            });
+          });
+        </script>
+      </head>
+      <body>
+        <header class="index_header">
+          <nav class="navigation">
+            <div class="nav_logo">
+              <h2><i class="fas fa-h-square"></i> Hotel-BNB</h2>
+            </div>
+            <div class="nav_sub_menu">
+              <ul class="nav_sub_menu">
+                <li>About Hotel-BNB</li>
+                <li>Become a poster</li>
+                <li>
+                  <div class="user_info">
+                    <i class="fas fa-bars"></i>
+                    <i class="far fa-user"></i>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          <!-- Search section -->
+          <div class="search_feature">
+            <form action="/" class="search_form">
+              <div class="search_options">
+                <div>
+                  <label for="">Location</label>
+                </div>
+                <input
+                  type="text"
+                  placeholder="Where are you going?"
+                  name="location"
+                />
+              </div>
+              <div class="search_options">
+                <div>
+                  <label for="">Check in (optional)</label>
+                </div>
+                <input
+                  readonly
+                  type="text"
+                  placeholder="Add dates"
+                  id="checkin__date"
+                  name="checkin_date"
+                />
+              </div>
+              <div class="search_options">
+                <div>
+                  <label for="">Check out (optional)</label>
+                </div>
+                <input
+                  type="text"
+                  placeholder="Add dates"
+                  id="checkout__date"
+                  name="checkout_date"
+                />
+              </div>
+              <!-- Button -->
+              <div>
+                <button>
+                  <i class="fas fa-search-location"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+          <h1>Let's go some places</h1>
+        </header>
+      </body>
+    </html>
+    
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/root/index.css" />
+    <link rel="stylesheet" href="css/root/becomePoster.css" />
     <!-- Date picker -->
     <!-- Datepicker -->
     <link
@@ -20,7 +148,7 @@
     />
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script>
+    <!-- <script>
       $(function () {
         $(function () {
           var dateFormat = "mm/dd/yy",
@@ -57,72 +185,18 @@
           }
         });
       });
-    </script>
+    </script> -->
   </head>
   <body>
-    <header class="index_header">
-      <nav class="navigation">
-        <div class="nav_logo">
-          <h2><i class="fas fa-h-square"></i> Hotel-BNB</h2>
-        </div>
-        <div class="nav_sub_menu">
-          <ul class="nav_sub_menu">
-            <li>About Hotel-BNB</li>
-            <li>Become a poster</li>
-            <li>
-              <div class="user_info">
-                <i class="fas fa-bars"></i>
-                <i class="far fa-user"></i>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      <!-- Search section -->
-      <div class="search_feature">
-        <form action="/" class="search_form">
-          <div class="search_options">
-            <div>
-              <label for="">Location</label>
-            </div>
-            <input
-              type="text"
-              placeholder="Where are you going?"
-              name="location"
-            />
-          </div>
-          <div class="search_options">
-            <div>
-              <label for="">Check in (optional)</label>
-            </div>
-            <input
-              readonly
-              type="text"
-              placeholder="Add dates"
-              id="checkin__date"
-              name="checkin_date"
-            />
-          </div>
-          <div class="search_options">
-            <div>
-              <label for="">Check out (optional)</label>
-            </div>
-            <input
-              type="text"
-              placeholder="Add dates"
-              id="checkout__date"
-              name="checkout_date"
-            />
-          </div>
-          <!-- Button -->
-          <div>
-            <button>
-              <i class="fas fa-search-location"></i>
-            </button>
-          </div>
-        </form>
+    <div id="top_div">
+      <div id="top_div_left">
+        <h1 class="h1_class">
+          Hosting<br />
+          makes Hotel-bnb, <br />
+          Hotel-bnb
+        </h1>
       </div>
-      <h1>Let's go some places</h1>
-    </header>
+      <div id="top_div_right">background2</div>
+    </div>
   </body>
 </html>
