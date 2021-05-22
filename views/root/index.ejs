@@ -65,7 +65,7 @@
     </script>
   </head>
   <body>
-    <header class="index_header" id="index_intro">
+    <header class="index_header">
       <nav class="navigation">
         <div class="nav_logo">
           <h2><i class="fas fa-h-square"></i> Hotel-BNB</h2>
@@ -95,6 +95,7 @@
                 type="text"
                 placeholder="Where are you going?"
                 name="location"
+                id="location_search_term"
               />
             </div>
             <div class="search_options">
@@ -241,5 +242,19 @@
         </div>
       </div>
     </footer>
+    <script>
+      function activatePlaceSearch() {
+        let input = document.querySelector("#location_search_term");
+        let option = {
+          types: ["(cities)"],
+        };
+        var autocomplete = new google.maps.places.Autocomplete(input, option);
+      }
+    </script>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIYpSNFQeK5e5LluHsADjpRLnZeK78YKc&callback=activatePlaceSearch&libraries=places&v=weekly"
+    ></script>
   </body>
 </html>
