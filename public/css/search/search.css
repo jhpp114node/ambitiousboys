@@ -7,8 +7,8 @@
 .hotel_search_container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   margin: 0 1rem;
+  position: relative;
 }
 
 .left_container {
@@ -20,6 +20,7 @@
 
 .right_container {
   flex: 1;
+  position: relative;
 }
 
 /* CSS for each data fetch from API */
@@ -97,4 +98,13 @@
   color: rgb(29, 29, 29);
   font-weight: 100;
   font-size: 1rem;
+}
+
+/* Map */
+#map {
+  position: absolute;
+  margin: 0 auto;
+  width: 48vw;
+  height: 100%;
+  align-items: center;
 }

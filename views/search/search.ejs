@@ -59,8 +59,77 @@
           <% }) %>
         </div>
       </div>
-      <div class="right_container"></div>
+      <div class="right_container">
+        <div id="map"></div>
+        <script defer>
+          function initalizeMap() {
+            initGoogleMap();
+          }
+          function initGoogleMap() {
+            let map;
+            // these initial long and lat is from Hotel API
+            let longitude = Number(
+              "<%=renderDataObj.apiGoogleMapGeoLocation.location.lon%>"
+            );
+            let latitude = Number(
+              "<%=renderDataObj.apiGoogleMapGeoLocation.location.lat%>"
+            );
+            console.log("==============");
+            console.log(longitude);
+            console.log(latitude);
+            console.log("===============");
+            let mapOption = {
+              zoom: 11,
+              center: {lat: latitude, lng: longitude}
+            };
+            map = new google.maps.Map(document.getElementById("map"), mapOption);
+            const apiHotel = <%- JSON.stringify(renderDataObj.filteredData)%>;
+            console.log(apiHotel);
+            apiHotel.forEach((eachAPIHotel) => {
+              console.log(eachAPIHotel.location);
+              const hotelLabel = eachAPIHotel.label;
+              const coordLat = Number(eachAPIHotel.location.lat);
+              const coordLon = Number(eachAPIHotel.location.lon);
+              const coord = {
+                lat: coordLat,
+                lng: coordLon
+              };
+              const props = {
+                coord : coord,
+                content: hotelLabel
+              };
+              // end of api map marker
+              addMarkerToMap(props, map);
+            });
+          }
+          // add marker to the map
+          function addMarkerToMap(props, map) {
+            console.log(props.coord);
+            let marker = new google.maps.Marker({
+              position: props.coord,
+              map: map
+            });
+            if (props.content) {
+              let infoWindow = new google.maps.InfoWindow({
+                  content: props.content
+              });
+              marker.addListener('mouseover', function() {
+                  infoWindow.open(map, marker);
+              });
+              marker.addListener('mouseout', function() {
+                  infoWindow.close();
+              });
+            }
+          }
+        </script>
+        <script
+          async
+          defer
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIYpSNFQeK5e5LluHsADjpRLnZeK78YKc&callback=initalizeMap&libraries=geometry,places&v=weekly"
+        ></script>
+      </div>
     </main>
+
     <script src="/js/search/search.js" defer></script>
   </body>
 </html>
