@@ -75,11 +75,19 @@
           <ul class="nav_sub_menu">
             <li>About Hotel-BNB</li>
             <li>Become a poster</li>
-            <li>
-              <div class="user_info">
-                <i class="fas fa-bars"></i>
-                <i class="far fa-user"></i>
+            <li class="dropdown_link">
+              <div class="user_info dropdown_link">
+                <i class="fas fa-bars dropdown_link"></i>
+                <i class="far fa-user dropdown_link"></i>
               </div>
+              <!-- Dropdown_menu -->
+              <div class="dropdown">
+                <div id="dropdown_menu_loggedOut" class="dropdown_content">
+                  <a href="">Login</a>
+                  <a href="">Sign Up</a>
+                </div>
+              </div>
+              <!-- End of Dropdown menu -->
             </li>
           </ul>
         </div>
@@ -238,9 +246,7 @@
           </div>
         </div>
         <div class="footer_right_container">
-          <a href="#index_intro">
-            <i class="fas fa-angle-up up"></i>
-          </a>
+          <i class="fas fa-angle-up up"></i>
         </div>
       </div>
     </footer>
@@ -258,5 +264,6 @@
       defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIYpSNFQeK5e5LluHsADjpRLnZeK78YKc&callback=activatePlaceSearch&libraries=places&v=weekly"
     ></script>
+    <script src="/js/root/dropdown.js" defer></script>
   </body>
 </html>
