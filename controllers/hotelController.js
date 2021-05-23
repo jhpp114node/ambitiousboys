@@ -19,6 +19,7 @@ const hotel_search_index = async (req, res) => {
     console.log(filteredData);
     const renderDataObj = {
       searchedCity: cityname,
+      apiGoogleMapGeoLocation: hotelData.results.locations[0],
       filteredData: filteredData,
     };
     res
