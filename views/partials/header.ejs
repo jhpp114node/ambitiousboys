@@ -1,0 +1,32 @@
+<header class="regular_nav_header">
+  <nav class="regular_nav">
+    <div class="regular_nav_logo">
+      <h2><i class="fas fa-h-square"></i> <a href="/">Hotel-BNB</a></h2>
+    </div>
+    <div class="regular_nav_sub_menu">
+      <ul class="regular_nav_sub_menu">
+        <li><a href="/#about">About Hotel-BNB</a></li>
+        <li><a href="/post/home">Become a poster</a></li>
+        <li class="dropdown_link">
+          <div class="user_info dropdown_link">
+            <i class="fas fa-bars dropdown_link"></i>
+            <i class="far fa-user dropdown_link"></i>
+          </div>
+          <!-- Dropdown_menu -->
+          <div class="dropdown">
+            <div id="dropdown_menu_loggedOut" class="dropdown_content">
+              <% if (!user) { %>
+              <a href="/auth/login">Login</a>
+              <a href="/auth/register">Sign Up</a>
+              <% } else { %>
+              <a href="/user/account">Account</a>
+              <a href="/auth/logout">Logout</a>
+              <% }%>
+            </div>
+          </div>
+          <!-- End of Dropdown menu -->
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>

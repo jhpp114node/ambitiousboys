@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hotel-BNB USER</title>
+    <!-- Fontawesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/account/user.css" />
+  </head>
+  <body>
+    <%- include('../partials/header.ejs') %>
+    <h1>This is USER page</h1>
+    <section class="user_section">
+      <div class="user_main_left">
+        <div class="user_profile_img_container">
+          <img
+            class="user_profile_img"
+            src="https://images.unsplash.com/photo-1612392061787-2d078b3e573c?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=701&q=80"
+            alt="Temporary Image"
+          />
+          <div>
+            <button class="user_update_photo">Update User Photo</button>
+          </div>
+        </div>
+        <hr class="user_profile_left_divider" />
+        <div class="user_profile_posted_hotel">
+          <i class="fas fa-hotel"></i> xx hotels posted
+        </div>
+        <div class="user_profile_info">
+          <p>User information</p>
+          <div>
+            <p>
+              <i class="fas fa-check"></i> Email:
+              <small>abc@agb.com</small>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="user_main_right">
+        <div class="user_main_heading_wrapper">
+          <h2 class="user_main_hi">Hi, I'm xxx</h2>
+          <form action="#">
+            <button class="post_hotel">Forget Me</button>
+          </form>
+        </div>
+        <hr class="user_hr_divider" />
+        <div class="user_main_right_hotel_lists">
+          <div class="user_main_tab_container">
+            <button class="user_tab" id="userTabDefault">Posting Lists</button>
+          </div>
+          <!-- Panel Container -->
+          <div class="user_main_tab_panel_container" id="userTabHotelList">
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="/js/root/dropdown.js" defer></script>
+  </body>
+</html>

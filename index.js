@@ -34,9 +34,11 @@ app.use(function (req, res, next) {
 const HOTEL_SEARCH_ROUTE = require("./routes/Hotel.js");
 const HOTEL_POSTER_ROUTE = require("./routes/BecomePoster.js");
 const AUTH_ROUTE = require("./routes/Auth.js");
+const ACCOUNT_ROUTE = require("./routes/Account.js");
 app.use("/hotel", HOTEL_SEARCH_ROUTE);
 app.use("/post", HOTEL_POSTER_ROUTE);
 app.use("/auth", AUTH_ROUTE);
+app.use("/user", ACCOUNT_ROUTE);
 // ROOT ROUTES ================
 
 app.get("/", (req, res) => {
