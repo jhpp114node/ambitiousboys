@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hotel-BNB Register</title>
+    <title>Hotel-BNB Login</title>
     <!-- Bootstrap CDN -->
     <link
       rel="stylesheet"
@@ -17,7 +17,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/auth/registerform.css" />
+    <link rel="stylesheet" href="/css/auth/loginform.css" />
   </head>
   <body>
     <header class="regular_nav_header">
@@ -29,24 +29,15 @@
           <ul class="regular_nav_sub_menu">
             <li><a href="/#about">About Hotel-BNB</a></li>
             <li><a href="/post/home">Become a poster</a></li>
-            <!-- <li class="dropdown_link">
-              <div class="user_info dropdown_link">
-                <i class="fas fa-bars dropdown_link"></i>
-                <i class="far fa-user dropdown_link"></i>
-              </div> -->
-            <!-- Dropdown_menu -->
-            <!-- <div class="dropdown">
-                <div id="dropdown_menu_loggedOut" class="dropdown_content">
-                  <a href="">Login</a>
-                  <a href="/auth/register">Sign Up</a>
-                </div>
-              </div> -->
-            <!-- End of Dropdown menu -->
-            <!-- </li> -->
           </ul>
         </div>
       </nav>
     </header>
+    <!-- Status Message Tag -->
+    <% if (registerStatusMessage) { %>
+    <p class="status_message"><%=registerStatusMessage%></p>
+    <% } %>
+    <!-- End of Status message Tag -->
     <div class="register_container">
       <div class="image_container">
         <img
@@ -56,12 +47,8 @@
         />
       </div>
       <div class="form_container">
-        <h1 class="register_title">CREATE ACCOUNT</h1>
-        <form
-          action="/auth/register"
-          method="POST"
-          class="inner_form_container"
-        >
+        <h1 class="register_title">LOGIN ACCOUNT</h1>
+        <form action="/auth/login" method="POST" class="inner_form_container">
           <!-- Username -->
           <div>
             <label for="username">Username</label>
@@ -104,36 +91,18 @@
             </div>
           </div>
           <!-- End Password -->
-          <!-- Confirm password -->
-          <div>
-            <label for="confirmPassword">Confirm Password</label>
-            <div class="input_container">
-              <input
-                type="password"
-                name="confirmPassword"
-                id="confirmPassword"
-                placeholder="Confirm Password"
-                required
-                onkeyup="checkPasswordMatching();"
-              />
-              <span id="confirm_password_message"></span>
-            </div>
-          </div>
-          <!-- End password -->
           <!-- ===================== -->
           <div class="input_container">
             <input
-              id="submit"
               type="submit"
               name=""
-              value="Create Account"
+              value="Login"
               class="input_submit_register"
-              disabled
             />
           </div>
-          <a clas="login_with_google" href="">Register with Google</a>
+          <a clas="login_with_google" href="">Login with Google</a>
           <span class="log_in_link"
-            >Already have an accout? <a href="/auth/login">Log In</a></span
+            >Don't have an account? <a href="/auth/register">Register</a></span
           >
         </form>
       </div>
@@ -141,6 +110,6 @@
     <!-- Footer -->
     <%- include('../partials/footer.ejs') %>
     <!-- End of footer -->
-    <script src="/js/auth/registerform.js"></script>
+    <script src="/js/auth/loginform.js"></script>
   </body>
 </html>
