@@ -83,11 +83,13 @@
               <!-- Dropdown_menu -->
               <div class="dropdown">
                 <div id="dropdown_menu_loggedOut" class="dropdown_content">
-                  <% if (user) { %>
-                  <p><%= user.user_username%></p>
-                  <% } %>
+                  <% if (!user) { %>
                   <a href="/auth/login">Login</a>
                   <a href="/auth/register">Sign Up</a>
+                  <% } else { %>
+                  <a href="/user/account">Account</a>
+                  <a href="/auth/logout">Logout</a>
+                  <% }%>
                 </div>
               </div>
               <!-- End of Dropdown menu -->
