@@ -1,6 +1,11 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
+const passport = require("passport");
+
+// passport
+require("../passport/passport_google");
+
 // Register
 const auth_register_get = (req, res) => {
   res.status(200).render("auth/registerform");
@@ -93,9 +98,54 @@ const auth_login_post = async (req, res) => {
   }
 };
 
+const auth_logout = (req, res) => {
+  req.session.destroy((err) => {
+    res.redirect("/");
+  });
+};
+
+const google_login = (req, res) => {
+  res.redirect("/auth/google");
+};
+
+const google_login_good = async (req, res) => {
+  // console.log(`The user: ${req.session.user}`);
+  // check if the email already in the database
+  const google_email = req.session.user.user.email;
+  // console.log(google_email);
+  try {
+    const targetUser = await User.findOne({ email: google_email });
+    if (targetUser === null) {
+      const googleUserData = {
+        email: google_email,
+        username: req.session.user.user.given_name,
+        isAdmin: false,
+        image: req.session.user.user.picture,
+      };
+      await User.create(googleUserData);
+      return res.status(200).redirect("/");
+    } else {
+      // if targetUser email already exist in the database
+      req.session.user = {
+        user_id: targetUser._id,
+        user_email: targetUser.email,
+        user_username: targetUser.username,
+        user_image: targetUser.image,
+      };
+      // console.log(req.session.user);
+      return res.status(200).redirect("/");
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   auth_register_get,
   auth_register_post,
   auth_login_get,
   auth_login_post,
+  auth_logout,
+  google_login,
+  google_login_good,
 };
