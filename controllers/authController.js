@@ -12,6 +12,23 @@ const auth_register_post = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     // check if the user email is already exist in the database
     const user = await User.findOne({ email: email }).exec();
+    if (user === null) {
+      // if user is not in database yet add
+      const userRegisterData = {
+        email: email,
+        username: username,
+        password: hashedPassword,
+        isAdmind: false,
+        image: null,
+      };
+      try {
+        await User.create(userRegisterData);
+        console.log("[Register]: add successfully");
+      } catch (addUserError) {
+        console.error(`[Register]: fail to add user ${addUserError}`);
+      }
+    }
+    // if user is already exist
     console.log(user);
   } catch (error) {
     console.error(error);
