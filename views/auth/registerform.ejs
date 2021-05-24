@@ -29,20 +29,20 @@
           <ul class="regular_nav_sub_menu">
             <li><a href="/#about">About Hotel-BNB</a></li>
             <li><a href="/post/home">Become a poster</a></li>
-            <li class="dropdown_link">
+            <!-- <li class="dropdown_link">
               <div class="user_info dropdown_link">
                 <i class="fas fa-bars dropdown_link"></i>
                 <i class="far fa-user dropdown_link"></i>
-              </div>
-              <!-- Dropdown_menu -->
-              <div class="dropdown">
+              </div> -->
+            <!-- Dropdown_menu -->
+            <!-- <div class="dropdown">
                 <div id="dropdown_menu_loggedOut" class="dropdown_content">
                   <a href="">Login</a>
                   <a href="/auth/register">Sign Up</a>
                 </div>
-              </div>
-              <!-- End of Dropdown menu -->
-            </li>
+              </div> -->
+            <!-- End of Dropdown menu -->
+            <!-- </li> -->
           </ul>
         </div>
       </nav>
@@ -57,7 +57,11 @@
       </div>
       <div class="form_container">
         <h1 class="register_title">CREATE ACCOUNT</h1>
-        <form action="#" class="inner_form_container">
+        <form
+          action="/auth/register"
+          method="POST"
+          class="inner_form_container"
+        >
           <!-- Username -->
           <div>
             <label for="username">Username</label>

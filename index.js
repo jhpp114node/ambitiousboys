@@ -1,16 +1,28 @@
 const trimCity = require("./modules/trim_city_name");
 const express = require("express");
-const app = express();
-const PORT = 3000;
+const mongoose = require("./utils/db");
 const path = require("path");
+const session = require("express-session");
 const cookieParser = require("cookie-parser");
+var passport = require("passport");
 require("dotenv").config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(
+  session({
+    secret: "this will be in env file later",
+    saveUninitialized: false,
+    resave: true,
+    cookie: { maxAge: 6000000 },
+  })
+);
 
 // ROUTER =====================
 const HOTEL_SEARCH_ROUTE = require("./routes/Hotel.js");
