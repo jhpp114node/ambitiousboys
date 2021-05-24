@@ -23,6 +23,10 @@ app.use(
     cookie: { maxAge: 6000000 },
   })
 );
+app.use(function (req, res, next) {
+  res.locals.user = req.session.user;
+  next();
+});
 
 // ROUTER =====================
 const HOTEL_SEARCH_ROUTE = require("./routes/Hotel.js");

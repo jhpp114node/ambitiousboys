@@ -57,8 +57,45 @@ const auth_login_get = (req, res) => {
     registerStatusMessage: req.session.userRegisterStatusMessage,
   });
 };
+
+const auth_login_post = async (req, res) => {
+  const { email, password } = req.body;
+  // check if user email exists in the database
+  try {
+    const userFound = await User.findOne({ email: email }).exec();
+    if (userFound === null) {
+      // if user email does not exist
+      req.session.userRegisterStatusMessage = "Invalid email or password.";
+      return res.status(401).redirect("/auth/login");
+    } else {
+      // if the email exist
+      // compare the hash
+      if (await bcrypt.compare(password, userFound.password)) {
+        // if the password matches
+        // store it into session
+        req.session.user = {
+          user_id: userFound._id,
+          user_email: userFound.email,
+          user_username: userFound.username,
+          user_image: userFound.image,
+        };
+
+        console.log("Login success");
+        return res.status(200).redirect("/");
+      } else {
+        // if password does not match
+        req.session.userRegisterStatusMessage = "Invalid email or password.";
+        return res.status(401).redirect("/auth/login");
+      }
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   auth_register_get,
   auth_register_post,
   auth_login_get,
+  auth_login_post,
 };
