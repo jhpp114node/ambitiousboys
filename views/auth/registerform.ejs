@@ -56,12 +56,12 @@
         />
       </div>
       <div class="form_container">
-        <h1>CREATE ACCOUNT</h1>
+        <h1 class="register_title">CREATE ACCOUNT</h1>
         <form action="#" class="inner_form_container">
           <!-- Username -->
           <div>
             <label for="username">Username</label>
-            <div>
+            <div class="input_container">
               <input
                 type="text"
                 name="username"
@@ -75,7 +75,7 @@
           <!-- Email -->
           <div>
             <label for="email">Email</label>
-            <div>
+            <div class="input_container">
               <input
                 type="email"
                 name="email"
@@ -89,7 +89,7 @@
           <!-- Password -->
           <div>
             <label for="password">Password</label>
-            <div>
+            <div class="input_container">
               <input
                 type="password"
                 name="password"
@@ -103,7 +103,7 @@
           <!-- Confirm password -->
           <div>
             <label for="confirmPassword">Confirm Password</label>
-            <div>
+            <div class="input_container">
               <input
                 type="password"
                 name="confirmPassword"
@@ -115,14 +115,18 @@
           </div>
           <!-- End password -->
           <!-- ===================== -->
-          <input
-            type="submit"
-            name=""
-            value="Create Account"
-            class="input_submit_register"
-          />
-          <a href="">Register with Google</a>
-          <span>Already have an accout? <a href="">Log In</a></span>
+          <div class="input_container">
+            <input
+              type="submit"
+              name=""
+              value="Create Account"
+              class="input_submit_register"
+            />
+          </div>
+          <a clas="login_with_google" href="">Register with Google</a>
+          <span class="log_in_link"
+            >Already have an accout? <a href="">Log In</a></span
+          >
         </form>
       </div>
     </div>
