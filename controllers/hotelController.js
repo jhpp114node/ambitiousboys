@@ -1,3 +1,4 @@
+const Hotel = require("../models/hotel");
 // hotel_index
 const fetch = require("node-fetch");
 require("dotenv").config();
@@ -31,6 +32,13 @@ const hotel_search_index = async (req, res) => {
 };
 // blog_detail
 
+// hotel/new
+const hotel_new_post = async (req, res) => {
+  console.log(req.session.user);
+  return res.status(200).render("hotel/hotelAdd.ejs");
+};
+
 module.exports = {
   hotel_search_index,
+  hotel_new_post,
 };

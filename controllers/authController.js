@@ -24,7 +24,7 @@ const auth_register_post = async (req, res) => {
         email: email,
         username: username,
         password: hashedPassword,
-        isAdmind: false,
+        isAdmin: false,
         image: null,
       };
       try {
