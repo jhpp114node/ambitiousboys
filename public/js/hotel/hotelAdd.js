@@ -62,17 +62,6 @@ function inputValidation() {
     }
   }
 
-  if (globalIndex == 1) {
-    console.log("Global Index is 1");
-    let hotelCostValue = inputTags[0].value;
-    console.log(hotelCostValue);
-    if (isNaN(hotelCostValue)) {
-      console.log("it is not a number");
-      inputTags[0].className += " invalid";
-      isValid = false;
-    }
-  }
-
   if (isValid) {
     document.querySelectorAll(".step")[globalIndex].className += " finish";
   }
@@ -82,7 +71,7 @@ function inputValidation() {
 function manageData() {
   let allFormTabs = document.querySelectorAll(".tab");
   let inputTags = allFormTabs[globalIndex].getElementsByTagName("input");
-  if (globalIndex == 2) {
+  if (globalIndex == 1) {
     let cityValue = inputTags[globalIndex].value;
     console.log("The City is ", cityValue);
   }

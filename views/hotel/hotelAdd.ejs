@@ -15,12 +15,12 @@
       <section class="postHotel_user_posting_section">
         <header class="postHotel_user_posting_header">
           <h2>
-            Greeting! User <br />
+            Greeting! <%=postingUser.user_username%>, <br />
             Let's start posting your hotel.
           </h2>
         </header>
         <main class="postHotel_questions">
-          <form action="#" method="POST" id="regForm">
+          <form action="/hotel" method="POST" id="regForm">
             <!-- Step 1 -->
             <div class="postHotel_step1 tab">
               <p class="postHotel_info_step">Step 1</p>
@@ -368,7 +368,6 @@
               <span class="step"></span>
               <span class="step"></span>
               <span class="step"></span>
-              <span class="step"></span>
             </div>
           </form>
         </main>
@@ -387,7 +386,142 @@
     <!-- Footer -->
     <%- include('../partials/footer.ejs') %>
     <!-- End of footer -->
-    <script src="/js/hotel/hotelAdd.js" defer></script>
+    <script defer async src="/js/hotel/hotelAdd.js"></script>
     <script src="/js/auth/registerform.js" defer></script>
+    <script>
+      function initializeForCityAndCountry() {
+        // DOM Elements
+        let allFormTabs = document.querySelectorAll(".tab");
+        let nextButtonDOM = document.querySelector("#nextBtn");
+        // filter out based on the city name
+        let option1 = {
+          types: ["(cities)"],
+        };
+        // DOM ELEMENTS
+        let hotelLocationInputDOM = document.querySelector("#hotelCity");
+        let hotelStreetAddressInputDOM = document.querySelector(
+          "#hotel_located_street_address"
+        );
+
+        let autoComplete1 = new google.maps.places.Autocomplete(
+          hotelLocationInputDOM,
+          option1
+        );
+        let countryRestrict = { country: "" };
+        const allPossibleCountry = document.querySelector(
+          "#hotel_located_country"
+        );
+        // To Get target country
+        // Seoul, South Korea
+        nextButtonDOM.addEventListener("click", async (event) => {
+          if (allFormTabs[2].style.display == "block") {
+            console.log("it is block now");
+            let targetSliceIndex = -1;
+            let countryDataBeforeParse = hotelLocationInputDOM.value;
+            //console.log("Trimmed:? ", countryDataBeforeParse.trim());
+            for (let i = 0; i < countryDataBeforeParse.length; i++) {
+              if (countryDataBeforeParse.charAt(i) === ",") {
+                targetSliceIndex = i;
+              }
+            }
+            let countryDataParsed = countryDataBeforeParse
+              .slice(targetSliceIndex + 1)
+              .trim();
+            //console.log(countryDataParsed);
+            if (countryDataParsed === "USA") {
+              allPossibleCountry.value = "US";
+              console.log();
+              countryRestrict.country = allPossibleCountry.value;
+              let option2 = {
+                types: ["address"],
+                componentRestrictions: countryRestrict,
+              };
+              // DOM ElEMENTS
+              let hotelStreetAddressInputDOM = document.querySelector(
+                "#hotel_located_street_address"
+              );
+              let autoComplete2 = new google.maps.places.Autocomplete(
+                hotelStreetAddressInputDOM,
+                option2
+              );
+            } else {
+              for (let i = 0; i < allPossibleCountry.length; i++) {
+                //console.log(allPossibleCountry.options[i]);
+                //console.log(allPossibleCountry.options[i].text);
+                if (allPossibleCountry.options[i].text == countryDataParsed) {
+                  console.log(allPossibleCountry.options[i].value);
+                  allPossibleCountry.value =
+                    allPossibleCountry.options[i].value;
+                  countryRestrict.country = allPossibleCountry.value;
+                  console.log(countryRestrict);
+                }
+              }
+              // DOM ELEMENTS
+              console.log(countryRestrict);
+              let option2 = {
+                types: ["address"],
+                componentRestrictions: countryRestrict,
+              };
+              // DOM ElEMENTS
+              let hotelStreetAddressInputDOM = document.querySelector(
+                "#hotel_located_street_address"
+              );
+              let autoComplete2 = new google.maps.places.Autocomplete(
+                hotelStreetAddressInputDOM,
+                option2
+              );
+            }
+          }
+          // if the next btn hits the map page
+          if (allFormTabs[3].style.display === "block") {
+            console.log("it is block now MAP");
+            console.log(
+              "hotelStreetAddressInputDOM: ",
+              hotelStreetAddressInputDOM.value
+            );
+            let hasAddressDOM = document.querySelector(".hasAddress");
+            let address = hotelStreetAddressInputDOM.value;
+            if (address.length <= 0) {
+              console.log("It should not touch here?");
+              hasAddressDOM.textContent =
+                "We failed to get your location. We will work on it. Sorry about your experience.";
+              address = "seattle, US";
+            } else {
+              hasAddressDOM.textContent = `Thanks We got your location`;
+            }
+
+            // apply empty map
+            let map;
+            map = new google.maps.Map(document.getElementById("map"), {
+              zoom: 18,
+            });
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode(
+              {
+                address: address,
+              },
+              (results, status) => {
+                if (status == google.maps.GeocoderStatus.OK) {
+                  console.log("It got in OK Status");
+                  console.log("GEO Location: ", results[0].geometry.location);
+                  new google.maps.Marker({
+                    position: results[0].geometry.location,
+                    map: map,
+                  });
+                  map.setCenter(results[0].geometry.location);
+                } else {
+                  console.log("Something is wrong on your map");
+                }
+              }
+            );
+          }
+        });
+      }
+    </script>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIYpSNFQeK5e5LluHsADjpRLnZeK78YKc&libraries=geometry,places&callback=initializeForCityAndCountry"
+    ></script>
   </body>
 </html>
