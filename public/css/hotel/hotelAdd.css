@@ -270,5 +270,5 @@ a:hover {
 }
 
 input.invalid {
-  background-color: var(--color-warning);
+  background-color: rgb(251, 54, 54);
 }

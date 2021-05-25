@@ -13,7 +13,7 @@ const auth_register_get = (req, res) => {
 
 const auth_register_post = async (req, res) => {
   const { username, email, password, confirmPassword } = req.body;
-  console.log(username, email);
+  // console.log(username, email);
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     // check if the user email is already exist in the database
