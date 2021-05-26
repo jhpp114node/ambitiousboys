@@ -4,6 +4,7 @@ const mongoose = require("./utils/db");
 const path = require("path");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
+const methodOverride = require("method-override");
 var passport = require("passport");
 require("dotenv").config();
 
@@ -14,6 +15,7 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 app.use(cookieParser());
 app.use(
   session({
