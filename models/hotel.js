@@ -9,7 +9,11 @@ const hotelSchema = mongoose.mongoose.Schema(
     address: String,
     is_hotel_api: Boolean,
     api_hotel_id: String,
-    imageUrls: [String],
+    imageUrls: [
+      {
+        type: String,
+      },
+    ],
     user: {
       id: {
         type: mongoose.mongoose.Schema.Types.ObjectId,
