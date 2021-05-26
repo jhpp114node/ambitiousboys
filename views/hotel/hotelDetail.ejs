@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hotel-BNB Hotel Detail</title>
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/css/hotel/hotelDetail.css" />
+  </head>
+  <body>
+    <%- include('../partials/header.ejs') %>
+    <!-- Header section -->
+    <section class="hotelDetail_content_container">
+      <section class="hotelDetail_header_section">
+        <div class="hotelDetail_header_intro">
+          <h1 class="hotelDetail_header_title">Hotel Detail Page</h1>
+          <small class="hotelDetail_header_small">
+            Selected Hotel Name: <%=hotelObjectForDetail.hotelDataDetail.label%>
+          </small>
+        </div>
+        <!-- Options buttons -->
+        <div class="hotelDetail_header_options">
+          <!-- Btn -->
+          <a
+            class="hotelDetail_header_edit_btn"
+            href="/hotel/<%=hotelObjectForDetail.hotelDataDetail._id%>/edit"
+          >
+            Edit
+          </a>
+          <form
+            action="/hotel/<%=hotelObjectForDetail.hotelDataDetail._id%>?_method=DELETE"
+            method="POST"
+          >
+            <button class="hotelDetail_header_delete_btn">Delete</button>
+          </form>
+        </div>
+      </section>
+    </section>
+  </body>
+</html>

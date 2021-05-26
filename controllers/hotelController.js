@@ -61,7 +61,7 @@ const hotel_new_post = async (req, res) => {
       is_hotel_api: false,
       api_hotel_id: null,
       imageUrls: null,
-      user: user,
+      user: postUserID,
     };
     const createdHotel = await Hotel.create(hotelPostObj);
     console.log("[Post Hotel]: hotel had been created successfully");
@@ -121,19 +121,44 @@ const hotel_new_image_post = async (req, res) => {
       Body: eachImageFile.buffer,
     };
     await s3.s3.upload(params).promise();
-    console.log("[Post Image upload] added on S3");
-    // , (error, data) => {
-    //   if (error) {
-    //     console.error("[Post Image upload] S3 Bucket Error" + error);
-    //   }
-    //   console.log("[Post Image upload] added on S3");
-    // });
-    console.log("Loop");
   }
   console.log(reformImageName);
   try {
     await Hotel.findByIdAndUpdate(hotel_id, { imageUrls: reformImageName });
     res.status(200).redirect("/");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const hotel_detail_get = async (req, res) => {
+  const hotelIDForDetail = req.params.id;
+  try {
+    const hotelDataDetail = await Hotel.findById(hotelIDForDetail);
+    const imageData = hotelDataDetail.imageUrls;
+    // retrieve all images from S3 bucket
+    const imageFromS3 = [];
+    for (let i = 0; i < imageData.length; i++) {
+      let param = {
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Key: `${imageData[i]}`,
+      };
+      let hotelImageDataS3 = await s3.s3.getObject(param).promise();
+      let hotel_image = hotelImageDataS3.Body;
+      let buffer = Buffer.from(hotel_image);
+      let base64data = buffer.toString("base64");
+      let imageDOM = "data:image/jpeg;base64," + base64data;
+      imageFromS3.push(imageDOM);
+    }
+    const hotelObjectForDetail = {
+      hotelDataDetail: hotelDataDetail,
+      imageFromS3: imageFromS3,
+    };
+    return res
+      .status(200)
+      .render("hotel/hotelDetail", {
+        hotelObjectForDetail: hotelObjectForDetail,
+      });
   } catch (error) {
     console.error(error);
   }
@@ -145,4 +170,5 @@ module.exports = {
   hotel_new_post,
   hotel_new_image_get,
   hotel_new_image_post,
+  hotel_detail_get,
 };
