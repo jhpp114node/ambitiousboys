@@ -58,6 +58,7 @@ const hotel_new_post = async (req, res) => {
       _score: 0,
       label: hotelLabel,
       address: hotel_location_street,
+      full_city_name: hotelCity,
       is_hotel_api: false,
       api_hotel_id: null,
       imageUrls: null,
@@ -162,7 +163,36 @@ const hotel_detail_get = async (req, res) => {
   }
 };
 
-const hotel_edit_get = (req, res) => {};
+const hotel_edit_get = async (req, res) => {
+  const hotelEditId = req.params.id;
+  // retrieve target hotel data from db
+  try {
+    const hotelEditTarget = await Hotel.findById(hotelEditId);
+    const hotelEditImageUrls = hotelEditTarget.imageUrls;
+    const hotelEditImagesFromS3 = [];
+    for (let i = 0; i < hotelEditImageUrls.length; i++) {
+      let param = {
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Key: `${hotelEditImageUrls[i]}`,
+      };
+      let hotelImageDataS3 = await s3.s3.getObject(param).promise();
+      let hotel_image = hotelImageDataS3.Body;
+      let buffer = Buffer.from(hotel_image);
+      let base64data = buffer.toString("base64");
+      let imageDOM = "data:image/jpeg;base64," + base64data;
+      hotelEditImagesFromS3.push(imageDOM);
+    }
+    const hotelObjectForEdit = {
+      hotelEditTarget: hotelEditTarget,
+      hotelEditImagesFromS3: hotelEditImagesFromS3,
+    };
+    return res.status(200).render("hotel/hotelEdit", {
+      hotelObjectForEdit: hotelObjectForEdit,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 module.exports = {
   hotel_search_index,
@@ -171,4 +201,5 @@ module.exports = {
   hotel_new_image_get,
   hotel_new_image_post,
   hotel_detail_get,
+  hotel_edit_get,
 };
