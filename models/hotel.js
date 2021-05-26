@@ -9,6 +9,7 @@ const hotelSchema = mongoose.mongoose.Schema(
     address: String,
     is_hotel_api: Boolean,
     api_hotel_id: String,
+    full_city_name: String,
     imageUrls: [
       {
         type: String,

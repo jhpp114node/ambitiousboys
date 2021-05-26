@@ -14,4 +14,5 @@ router.post(
   hotelController.hotel_new_image_post
 );
 router.get("/:id", hotelController.hotel_detail_get);
+router.get("/:id/edit", hotelController.hotel_edit_get);
 module.exports = router;
