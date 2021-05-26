@@ -15,4 +15,6 @@ router.post(
 );
 router.get("/:id", hotelController.hotel_detail_get);
 router.get("/:id/edit", hotelController.hotel_edit_get);
+router.put("/:id", multer.upload_multiple, hotelController.hotel_edit_put);
+router.delete("/:id", hotelController.hotel_delete);
 module.exports = router;

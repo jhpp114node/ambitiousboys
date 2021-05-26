@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="/css/hotel/hotelEdit.css" />
   </head>
   <body>
+    <!-- Header -->
+    <%- include('../partials/header.ejs') %>
     <section class="hotelEdit_current_hotelData">
       <section class="hotelEdit_welcome_header_section">
         <h2>Edit Hotel: <%=hotelObjectForEdit.hotelEditTarget.label%></h2>
@@ -44,7 +46,7 @@
           <div class="postHotel_step1 tab">
             <p class="editHotel_info_step">Step 1</p>
             <div class="step_container">
-              <label for="hotelLabel" class="postHotel_info_questions"
+              <label for="hotelLabel" class="editHotel_info_questions"
                 >What is the name of your hotel?</label
               >
               <br /><br />
@@ -58,8 +60,8 @@
           </div>
           <!-- Step 2 -->
           <div class="postHotel_step2 tab">
-            <p class="postHotel_info_step">Step 2</p>
-            <label for="hotelCity" class="postHotel_info_questions"
+            <p class="editHotel_info_step">Step 2</p>
+            <label for="hotelCity" class="editHotel_info_questions"
               >What city is your hotel located at?</label
             >
             <br /><br />
@@ -72,8 +74,8 @@
           </div>
           <!-- Step 3 -->
           <div class="postHotel_step3 tab">
-            <p class="postHotel_info_step">Step 3</p>
-            <label for="hotel_located_country" class="postHotel_info_questions"
+            <p class="editHotel_info_step">Step 3</p>
+            <label for="hotel_located_country" class="editHotel_info_questions"
               >Country and Region</label
             >
             <br /><br />
@@ -341,7 +343,9 @@
             </div>
             <br /><br />
             <div class="hotel_located_street_address">
-              <label for="hotel_located_street" class="postHotel_info_questions"
+              <label
+                for="hotel_located_street_address"
+                class="editHotel_info_questions"
                 >Street</label
               >
               <br /><br />
@@ -349,11 +353,208 @@
                 type="text"
                 name="hotel_location_street"
                 id="hotel_located_street_address"
+                value="<%=hotelObjectForEdit.hotelEditTarget.address%>"
               />
             </div>
+          </div>
+          <!-- Map -->
+          <div class="postHotel_step4 tab">
+            <h2 class="editHotel_info_questions hasAddress"></h2>
+            <div id="map" style="width: 100%; height: 300px"></div>
+          </div>
+          <!-- Image -->
+          <div class="postHotel_step5 tab">
+            <div class="main_image_container">
+              <% for (let keyImage of
+              hotelObjectForEdit.hotelEditImagesFromS3.keys()) { %>
+              <div class="form_group_submitted">
+                <div class="uploadImage_eachBox">
+                  <img
+                    class="submitted_image"
+                    src="<%=hotelObjectForEdit.hotelEditImagesFromS3.get(keyImage)%>"
+                    alt="user posted hotel image"
+                  />
+                  <span class="submitted_image_remove">
+                    <i class="fas fa-trash-alt removeImage"></i>
+                  </span>
+                  <input type="text" name="imageId" value="<%=keyImage%>" />
+                </div>
+              </div>
+              <% } %>
+              <div class="form_group">
+                <label class="labelForUploadImage" for="hotelImagePost">
+                  Click to Upload Image
+                </label>
+                <input
+                  type="file"
+                  id="hotelImagePost"
+                  name="hotelImages"
+                  accept=".png, .jpg, .jpeg"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="postYourHotel_Questions_buttons">
+            <button
+              type="button"
+              id="prevBtn"
+              onclick="manageIndexByButton(-1)"
+            >
+              Previous
+            </button>
+            <button type="button" id="nextBtn" onclick="manageIndexByButton(1)">
+              Next
+            </button>
+          </div>
+
+          <div class="postYourHotel_Questions_step_indicator">
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
           </div>
         </form>
       </main>
     </section>
+    <%- include('../partials/footer.ejs') %>
+    <script async defer src="/js/hotel/hotelEdit.js"></script>
+    <script async defer src="/js/hotel/hotelImageEdit.js"></script>
+    <script>
+      function initializeForCityAndCountry() {
+        // DOM Elements
+        let allFormTabs = document.querySelectorAll(".tab");
+        let nextButtonDOM = document.querySelector("#nextBtn");
+        // filter out based on the city name
+        let option1 = {
+          types: ["(cities)"],
+        };
+        // DOM ELEMENTS
+        let hotelLocationInputDOM = document.querySelector("#hotelCity");
+        let hotelStreetAddressInputDOM = document.querySelector(
+          "#hotel_located_street_address"
+        );
+
+        let autoComplete1 = new google.maps.places.Autocomplete(
+          hotelLocationInputDOM,
+          option1
+        );
+        let countryRestrict = { country: "" };
+        const allPossibleCountry = document.querySelector(
+          "#hotel_located_country"
+        );
+        // To Get target country
+        // Seoul, South Korea
+        nextButtonDOM.addEventListener("click", async (event) => {
+          if (allFormTabs[2].style.display == "block") {
+            console.log("it is block now");
+            let targetSliceIndex = -1;
+            let countryDataBeforeParse = hotelLocationInputDOM.value;
+            //console.log("Trimmed:? ", countryDataBeforeParse.trim());
+            for (let i = 0; i < countryDataBeforeParse.length; i++) {
+              if (countryDataBeforeParse.charAt(i) === ",") {
+                targetSliceIndex = i;
+              }
+            }
+            let countryDataParsed = countryDataBeforeParse
+              .slice(targetSliceIndex + 1)
+              .trim();
+            //console.log(countryDataParsed);
+            if (countryDataParsed === "USA") {
+              allPossibleCountry.value = "US";
+              console.log();
+              countryRestrict.country = allPossibleCountry.value;
+              let option2 = {
+                types: ["address"],
+                componentRestrictions: countryRestrict,
+              };
+              // DOM ElEMENTS
+              let hotelStreetAddressInputDOM = document.querySelector(
+                "#hotel_located_street_address"
+              );
+              let autoComplete2 = new google.maps.places.Autocomplete(
+                hotelStreetAddressInputDOM,
+                option2
+              );
+            } else {
+              for (let i = 0; i < allPossibleCountry.length; i++) {
+                //console.log(allPossibleCountry.options[i]);
+                //console.log(allPossibleCountry.options[i].text);
+                if (allPossibleCountry.options[i].text == countryDataParsed) {
+                  console.log(allPossibleCountry.options[i].value);
+                  allPossibleCountry.value =
+                    allPossibleCountry.options[i].value;
+                  countryRestrict.country = allPossibleCountry.value;
+                  console.log(countryRestrict);
+                }
+              }
+              // DOM ELEMENTS
+              console.log(countryRestrict);
+              let option2 = {
+                types: ["address"],
+                componentRestrictions: countryRestrict,
+              };
+              // DOM ElEMENTS
+              let hotelStreetAddressInputDOM = document.querySelector(
+                "#hotel_located_street_address"
+              );
+              let autoComplete2 = new google.maps.places.Autocomplete(
+                hotelStreetAddressInputDOM,
+                option2
+              );
+            }
+          }
+          // if the next btn hits the map page
+          if (allFormTabs[3].style.display === "block") {
+            console.log("it is block now MAP");
+            console.log(
+              "hotelStreetAddressInputDOM: ",
+              hotelStreetAddressInputDOM.value
+            );
+            let hasAddressDOM = document.querySelector(".hasAddress");
+            let address = hotelStreetAddressInputDOM.value;
+            if (address.length <= 0) {
+              console.log("It should not touch here?");
+              hasAddressDOM.textContent =
+                "We failed to get your location. We will work on it. Sorry about your experience.";
+              address = "seattle, US";
+            } else {
+              hasAddressDOM.textContent = `Thanks We got your location`;
+            }
+
+            // apply empty map
+            let map;
+            map = new google.maps.Map(document.getElementById("map"), {
+              zoom: 18,
+            });
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode(
+              {
+                address: address,
+              },
+              (results, status) => {
+                if (status == google.maps.GeocoderStatus.OK) {
+                  console.log("It got in OK Status");
+                  console.log("GEO Location: ", results[0].geometry.location);
+                  new google.maps.Marker({
+                    position: results[0].geometry.location,
+                    map: map,
+                  });
+                  map.setCenter(results[0].geometry.location);
+                } else {
+                  console.log("Something is wrong on your map");
+                }
+              }
+            );
+          }
+        });
+      }
+    </script>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIYpSNFQeK5e5LluHsADjpRLnZeK78YKc&libraries=geometry,places&callback=initializeForCityAndCountry"
+    ></script>
   </body>
 </html>

@@ -1,6 +1,7 @@
 const s3 = require("../utils/s3");
 const Hotel = require("../models/hotel");
 const trimCity = require("../modules/trim_city_name");
+const addSemiToEachImageData = require("../modules/imageFilter");
 // hotel_index
 const fetch = require("node-fetch");
 require("dotenv").config();
@@ -105,7 +106,7 @@ const hotel_new_image_post = async (req, res) => {
   for (let i = 0; i < hotelImageFiles.length; i++) {
     let eachImageFile = hotelImageFiles[i];
     // this will have [filename, .extension]
-    console.log(eachImageFile.originalname);
+    // console.log(eachImageFile.originalname);
     let splitImageByTitleAndExtend = eachImageFile.originalname.split(".");
     let hotelImageName =
       preventDuplicateError++ +
@@ -169,7 +170,7 @@ const hotel_edit_get = async (req, res) => {
   try {
     const hotelEditTarget = await Hotel.findById(hotelEditId);
     const hotelEditImageUrls = hotelEditTarget.imageUrls;
-    const hotelEditImagesFromS3 = [];
+    const hotelEditImagesFromS3 = new Map();
     for (let i = 0; i < hotelEditImageUrls.length; i++) {
       let param = {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
@@ -180,7 +181,7 @@ const hotel_edit_get = async (req, res) => {
       let buffer = Buffer.from(hotel_image);
       let base64data = buffer.toString("base64");
       let imageDOM = "data:image/jpeg;base64," + base64data;
-      hotelEditImagesFromS3.push(imageDOM);
+      hotelEditImagesFromS3.set(hotelEditImageUrls[i], imageDOM);
     }
     const hotelObjectForEdit = {
       hotelEditTarget: hotelEditTarget,
@@ -194,6 +195,132 @@ const hotel_edit_get = async (req, res) => {
   }
 };
 
+const hotel_edit_put = async (req, res) => {
+  console.log("in put request");
+  let preventEditDuplicateImage = 0;
+  const hotelEditTargetId = req.params.id;
+  const { hotelLabel, hotelCity, hotel_location_street } = req.body;
+  const hotelEditImage = req.files;
+  const preExistImageId = req.body.imageId;
+
+  // =========================================
+  // Image ID Check
+  const myImageGotDeleteArray = [];
+  const myImageRemainArray = [];
+  if (typeof preExistImageId !== "undefined") {
+    console.log("prev function");
+    let parsedImageData = addSemiToEachImageData(preExistImageId);
+    const imageObjInDatabase = await Hotel.findById(hotelEditTargetId).select(
+      "imageUrls"
+    );
+    // previousImages contains Array of image urls (S3 keys)
+    const imageInDatabase = imageObjInDatabase.imageUrls;
+    for (let i = 0; i < imageInDatabase.length; i++) {
+      if (!parsedImageData.includes(imageInDatabase[i])) {
+        // push the image that user erased from existing image
+        myImageGotDeleteArray.push(imageInDatabase[i]);
+      } else {
+        // push the image that user did not erased from existing image
+        myImageRemainArray.push(imageInDatabase[i]);
+      }
+    }
+  }
+  // End of Image ID Check
+
+  // need to trim the cityname
+  let trimCityForDatabase = trimCity(hotelCity);
+  let fullnameForDatabase = hotelLabel + " " + hotelCity;
+  try {
+    // update database based on all data that passed from the user
+    const hotelEditObject = {
+      fullname: fullnameForDatabase,
+      city: trimCityForDatabase,
+      _score: 0,
+      label: hotelLabel,
+      address: hotel_location_street,
+      full_city_name: hotelCity,
+      api_hotel_id: null,
+    };
+    await Hotel.findByIdAndUpdate(hotelEditTargetId, hotelEditObject);
+  } catch (error) {
+    console.error(error);
+  }
+  // Delete all S3 images related to the target hotel
+  for (let i = 0; i < myImageGotDeleteArray.length; i++) {
+    // delete all keys from S3
+    let params = {
+      Bucket: process.env.AWS_S3_BUCKET_NAME,
+      Key: `${myImageGotDeleteArray[i]}`,
+    };
+    await s3.s3.deleteObject(params).promise();
+  }
+  // after delete all images from S3
+  // add new edit image into S3
+  let editReformImageName = [];
+  for (let i = 0; i < hotelEditImage.length; i++) {
+    let eachREformImageFile = hotelEditImage[i];
+    let splitImageByTitleAndExtension =
+      eachREformImageFile.originalname.split(".");
+    let hotelImageName =
+      preventEditDuplicateImage++ +
+      "_" +
+      hotelEditTargetId +
+      splitImageByTitleAndExtension[0] +
+      "." +
+      splitImageByTitleAndExtension[1];
+    editReformImageName.push(hotelImageName);
+    let params = {
+      Bucket: process.env.AWS_S3_BUCKET_NAME,
+      Key: `${hotelImageName}`,
+      Body: eachREformImageFile.buffer,
+    };
+    await s3.s3.upload(params).promise();
+  }
+  // store remained image from edit into new reform array
+  for (let i = 0; i < myImageRemainArray.length; i++) {
+    editReformImageName.push(myImageRemainArray[i]);
+  }
+  // add updated image into database
+  try {
+    await Hotel.findByIdAndUpdate(hotelEditTargetId, {
+      imageUrls: editReformImageName,
+    });
+    res.status(301).redirect(`/hotel/${hotelEditTargetId}`);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const hotel_delete = async (req, res) => {
+  const deleteTargetHotelId = req.params.id;
+  // find the hotel from database
+  const deleteTargetHotel = await Hotel.findById(deleteTargetHotelId).select(
+    "imageUrls"
+  );
+  // get images
+  const deleteTargetImages = deleteTargetHotel.imageUrls;
+  const deleteS3Objects = [];
+  for (let i = 0; i < deleteTargetImages.length; i++) {
+    let eachDeletImg = deleteTargetImages[i];
+    deleteS3Objects.push({ Key: `${eachDeletImg}` });
+  }
+  let params = {
+    Bucket: process.env.AWS_S3_BUCKET_NAME,
+    Delete: {
+      Objects: deleteS3Objects,
+    },
+  };
+  // delete the hotel obj from database
+  try {
+    // delete images from bucket
+    await s3.s3.deleteObjects(params).promise();
+    await Hotel.findByIdAndRemove(deleteTargetHotelId);
+    res.status(301).redirect("/user/account");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   hotel_search_index,
   hotel_new_get,
@@ -202,4 +329,6 @@ module.exports = {
   hotel_new_image_post,
   hotel_detail_get,
   hotel_edit_get,
+  hotel_edit_put,
+  hotel_delete,
 };
