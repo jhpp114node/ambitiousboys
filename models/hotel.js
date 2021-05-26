@@ -15,10 +15,8 @@ const hotelSchema = mongoose.mongoose.Schema(
       },
     ],
     user: {
-      id: {
-        type: mongoose.mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
+      type: mongoose.mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   },
   { timestamps: true }

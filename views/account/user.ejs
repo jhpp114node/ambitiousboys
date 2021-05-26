@@ -66,7 +66,49 @@
           </div>
           <!-- Panel Container -->
           <div class="user_main_tab_panel_container" id="userTabHotelList">
-            <div></div>
+            <div class="hotel_posting_panel">
+              <% if (userObject.postedHotel.length > 0) { %> <%
+              userObject.postedHotel.forEach( (eachHotel) => { %>
+              <div class="hotel_posting_row">
+                <img
+                  class="hotel_posting_image"
+                  src="<%=userObject.imageDOM[0]%>"
+                  alt="User posted hotel image"
+                />
+                <div class="hotel_post_right_container">
+                  <div class="hotel_info_container">
+                    <div class="hotel_info_name hotel_info">
+                      <h3>Hotel label:</h3>
+                      <p><%=eachHotel.label%></p>
+                    </div>
+                    <div class="hotel_info_address hotel_info">
+                      <h3>Hotel address:</h3>
+                      <p><%=eachHotel.address%></p>
+                    </div>
+                    <div class="hotel_info_city hotel_info">
+                      <h3>Hotel city:</h3>
+                      <p><%=eachHotel.city%></p>
+                    </div>
+                    <div class="hotel_posted_date hotel_info">
+                      <h3>Posted date</h3>
+                      <p><%=eachHotel.createdAt.toDateString()%></p>
+                    </div>
+                  </div>
+                  <div class="hotel_link_container">
+                    <button
+                      class="hotel_detail_btn"
+                      onclick="location.href='/hotel/<%=eachHotel._id%>'"
+                    >
+                      View My Hotel
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <% }) %> <% } else { %>
+              <p>No Hotel had been posted</p>
+              <% } %>
+            </div>
           </div>
         </div>
       </div>

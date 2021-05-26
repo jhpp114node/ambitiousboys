@@ -13,4 +13,5 @@ router.post(
   multer.upload_multiple,
   hotelController.hotel_new_image_post
 );
+router.get("/:id", hotelController.hotel_detail_get);
 module.exports = router;
