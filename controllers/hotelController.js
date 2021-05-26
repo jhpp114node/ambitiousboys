@@ -154,15 +154,15 @@ const hotel_detail_get = async (req, res) => {
       hotelDataDetail: hotelDataDetail,
       imageFromS3: imageFromS3,
     };
-    return res
-      .status(200)
-      .render("hotel/hotelDetail", {
-        hotelObjectForDetail: hotelObjectForDetail,
-      });
+    return res.status(200).render("hotel/hotelDetail", {
+      hotelObjectForDetail: hotelObjectForDetail,
+    });
   } catch (error) {
     console.error(error);
   }
 };
+
+const hotel_edit_get = (req, res) => {};
 
 module.exports = {
   hotel_search_index,
