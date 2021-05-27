@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/css/search/search.css" />
   </head>
   <body>
+    <%- include('../partials/header.ejs') %>
     <main class="hotel_search_container">
       <div class="left_container">
         <h2 class="searched_city">
@@ -24,6 +25,47 @@
           found</small
         >
         <br />
+        <!-- Data fetch from Database -->
+        <% if (renderDataObj.hotelDataFromDB.length > 0) { %>
+        <div>
+          <% for (let i = 0; i < renderDataObj.hotelDataFromDB.length; i++) { %>
+          <div class="hotel_image_from_db">
+            <img
+              class="hotel_image_db"
+              src="<%=renderDataObj.imageHashMap.get(renderDataObj.hotelDataFromDB[i]._id)%>"
+              alt="hotel image from database"
+            />
+            <!-- Descriptions for hotel -->
+            <div class="fetched_data_desc">
+              <small class="hotel_desc_address"
+                ><%=renderDataObj.hotelDataFromDB[i].address%></small
+              >
+              <div class="hotel_desc_header">
+                <h3>
+                  <span>
+                    <i class="fas fa-database"></i>
+                  </span>
+                  <%=renderDataObj.hotelDataFromDB[i].label%>
+                </h3>
+              </div>
+              <div class="hotel_desc_detail_btn">
+                <a class="hotel_desc_btn" href=""> View Detail </a>
+              </div>
+              <div class="hotelDB_desc_footer">
+                <i class="fas fa-star hotel_score_icon">
+                  <span class="hotel_score_text"
+                    >Rate: <% if (renderDataObj.hotelDataFromDB[i]._score <=
+                    Number(0)) { %> No rate at the moment... <% } else { %>
+                    renderDataObj.hotelDataFromDB[i]._score <% } %>
+                  </span>
+                </i>
+              </div>
+            </div>
+          </div>
+          <hr class="each_hotel_divider" />
+          <% } %>
+        </div>
+        <% } %>
         <!-- Data fetched from API -->
         <div class="fetched_data_container">
           <% renderDataObj.filteredData.forEach( (eachHotel) => { %>
@@ -31,9 +73,11 @@
             <!-- Image container -->
             <div class="fetched_data_img" image-id="<%=eachHotel.id%>">
               <i class="fas fa-chevron-circle-left leftArrow imgController"></i>
-              <img class="hotelSearch_image"
-              src=<%=`https://photo.hotellook.com/image_v2/limit/h${eachHotel.id}_${0}/280/180.jpg`%>
-              alt="Hotel Image">
+              <img
+                class="hotelSearch_image"
+                src="<%=`https://photo.hotellook.com/image_v2/limit/h${eachHotel.id}_${0}/280/180.jpg`%>"
+                alt="Hotel Image"
+              />
               <i
                 class="fas fa-chevron-circle-right rightArrow imgController"
               ></i>
@@ -74,19 +118,14 @@
             let latitude = Number(
               "<%=renderDataObj.apiGoogleMapGeoLocation.location.lat%>"
             );
-            console.log("==============");
-            console.log(longitude);
-            console.log(latitude);
-            console.log("===============");
             let mapOption = {
               zoom: 11,
               center: {lat: latitude, lng: longitude}
             };
             map = new google.maps.Map(document.getElementById("map"), mapOption);
             const apiHotel = <%- JSON.stringify(renderDataObj.filteredData)%>;
-            console.log(apiHotel);
             apiHotel.forEach((eachAPIHotel) => {
-              console.log(eachAPIHotel.location);
+              // console.log(eachAPIHotel.location);
               const hotelLabel = eachAPIHotel.label;
               const coordLat = Number(eachAPIHotel.location.lat);
               const coordLon = Number(eachAPIHotel.location.lon);
@@ -101,10 +140,53 @@
               // end of api map marker
               addMarkerToMap(props, map);
             });
+            // map for database hotels
+            let lengthOfHotelsFromDB = Number('<%-renderDataObj.hotelDataFromDB.length %>');
+            // console.log(lengthOfHotelsFromDB);
+            if (lengthOfHotelsFromDB == 0) {
+              // console.log("hello 0")
+            } else {
+              // console.log("Hello?");
+              // console.log("Here?")
+              let currentAddressDB = [];
+              <% renderDataObj.hotelDataFromDB.forEach( (eachHotelData) => { %>
+                  currentAddressDB = "<%=eachHotelData.address%>";
+                  var geocoder = new google.maps.Geocoder();
+                  if (geocoder) {
+                      geocoder.geocode({
+                          'address': currentAddressDB
+                      }, (geoCodeResult, geoCodeStatus) => {
+                          if (geoCodeStatus == google.maps.GeocoderStatus.OK) {
+                              var googleMapMarker = new google.maps.Marker({
+                                  position: geoCodeResult[0].geometry.location
+                              ,   map: map
+                              });
+                              var thePropsForDBMarker = {
+                                  content: "<%=eachHotelData.label%>"
+                              };
+                              if (thePropsForDBMarker.content) {
+                                  // console.log("From DB Map");
+                                  var infoWindows = new google.maps.InfoWindow({
+                                      content: thePropsForDBMarker.content
+                                  });
+                                  googleMapMarker.addListener('mouseover', function() {
+                                      infoWindows.open(map, googleMapMarker);
+                                  });
+                                  googleMapMarker.addListener('mouseout', function() {
+                                      infoWindows.close();
+                                  });
+                              }
+                              } else {
+                                  throw ("No Result Found in Map Display DB" + geoCodeStatus);
+                              }
+                      });
+                  }
+            <% }); %>
+            }
           }
           // add marker to the map
           function addMarkerToMap(props, map) {
-            console.log(props.coord);
+            // console.log(props.coord);
             let marker = new google.maps.Marker({
               position: props.coord,
               map: map
@@ -129,7 +211,8 @@
         ></script>
       </div>
     </main>
-
+    <%- include('../partials/footer.ejs') %>
     <script src="/js/search/search.js" defer></script>
+    <script src="/js/root/dropdown.js" defer></script>
   </body>
 </html>
