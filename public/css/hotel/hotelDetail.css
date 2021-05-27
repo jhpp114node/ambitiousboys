@@ -171,6 +171,20 @@ a:hover {
   border-radius: 2rem;
 }
 
+.hotelDetail_header_edit_btn:hover {
+  padding: 0.5rem;
+  width: 120px;
+  text-align: center;
+  margin: 0rem 1rem;
+  text-decoration: none;
+  outline: none;
+  font-weight: bold;
+  font-size: 1.5rem;
+  background-color: #12496e;
+  color: white;
+  border-radius: 2rem;
+}
+
 .hotelDetail_header_delete_btn {
   padding: 0.5rem;
   width: 120px;

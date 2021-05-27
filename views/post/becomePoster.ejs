@@ -9,16 +9,30 @@
     <link rel="stylesheet" href="/css/post/becomePoster.css" />
   </head>
   <body>
+    <!-- Header -->
+    <%- include('../partials/header.ejs') %>
     <!--Poster-->
     <section id="poster">
       <div id="top_div_left">
         <p class="posting">Posting</p>
         <p class="posting">makes Hotel-BnB,</p>
         <p class="posting">Hotel-BnB</p>
-        <button class="button1">Try Posting</button>
+        <% if (!user) { %>
+        <button class="button1" onclick="location.href='/auth/login'">
+          Let's Login First
+        </button>
+        <% } else { %>
+        <button class="button1" onclick="location.href='/hotel/new'">
+          Let's Post!
+        </button>
+        <% } %>
       </div>
       <div id="top_div_right">
-        <div class="post_picture"></div>
+        <img
+          class="right_side_image"
+          src="https://images.unsplash.com/photo-1553369728-15ec6971afaf?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YmVjb21lJTIwYSUyMGhvc3R8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60"
+          alt=""
+        />
       </div>
     </section>
     <!--Post Anything-->
@@ -54,40 +68,39 @@
     </section>
     <!--art of posting-->
     <section id="art-hosting">
-      <div
-        style="font-size: 75px; padding: 200px 200px 200px 0; text-align: left"
-      >
+      <p class="art-hosting-paragraph">
         We'll help you bring <br />
         the art of posting your hotel to life
-      </div>
+      </p>
+
       <div class="posting-life">
-        <div>
-          <div id="lifeimage1"></div>
-          <div class="lifeimage-caption">
-            Learn <br />
-            how we support Posters
-          </div>
+        <div class="image_container">
+          <img
+            class="posting_life_image"
+            src="https://images.unsplash.com/photo-1594055797771-336980a210c9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTh8fGFpcmJuYiUyMGhvc3R8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+            alt=""
+          />
         </div>
-        <div>
-          <div id="lifeimage2"></div>
-          <div class="lifeimage-caption">
-            Join <br />
-            an online class
-          </div>
+        <div class="image_container">
+          <img
+            class="posting_life_image"
+            src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8b25saW5lJTIwY2xhc3N8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+            alt=""
+          />
         </div>
-        <div>
-          <div id="lifeimage3"></div>
-          <div class="lifeimage-caption">
-            Ask <br />
-            a Superposter
-          </div>
+        <div class="image_container">
+          <img
+            class="posting_life_image"
+            src="https://images.unsplash.com/photo-1562141989-a764b5668046?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTh8fGFzayUyMGElMjBzdXBlcnBvc3RlcnxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+            alt=""
+          />
         </div>
-        <div>
-          <div id="lifeimage4"></div>
-          <div class="lifeimage-caption">
-            Discover <br />
-            more resources
-          </div>
+        <div class="image_container">
+          <img
+            class="posting_life_image"
+            src="https://images.unsplash.com/photo-1541616461010-03ec2728e6a5?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjE5fHxtb3JlJTIwcmVzb3VyY2V8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+            alt=""
+          />
         </div>
       </div>
     </section>
@@ -98,8 +111,17 @@
       <div id="bottom_div_right">
         <p class="posting-bottom">Try posting on</p>
         <p>Hotel-BnB,</p>
-        <button class="button2">Let's go!</button>
+        <% if (!user) { %>
+        <button class="button2" onclick="location.href='/auth/login'">
+          Let's Login First
+        </button>
+        <% } else { %>
+        <button class="button2" onclick="location.href='/hotel/new'">
+          Let's Post!
+        </button>
+        <% } %>
       </div>
     </section>
+    <script src="/js/root/dropdown.js" defer></script>
   </body>
 </html>
