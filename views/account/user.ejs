@@ -55,7 +55,11 @@
           <h2 class="user_main_hi">
             Welcome, <%=userObject.user.user_username%>
           </h2>
-          <form action="#">
+          <form
+            id="user_delete_form"
+            action="/user/<%=userObject.user.user_id%>?_method=DELETE"
+            method="POST"
+          >
             <button class="post_hotel">Forget Me</button>
           </form>
         </div>
@@ -68,11 +72,11 @@
           <div class="user_main_tab_panel_container" id="userTabHotelList">
             <div class="hotel_posting_panel">
               <% if (userObject.postedHotel.length > 0) { %> <%
-              userObject.postedHotel.forEach( (eachHotel) => { %>
+              userObject.postedHotel.forEach( (eachHotel, index) => { %>
               <div class="hotel_posting_row">
                 <img
                   class="hotel_posting_image"
-                  src="<%=userObject.imageDOM[0]%>"
+                  src="<%=userObject.imageDOM[index]%>"
                   alt="User posted hotel image"
                 />
                 <div class="hotel_post_right_container">
@@ -114,5 +118,6 @@
       </div>
     </section>
     <script src="/js/root/dropdown.js" defer></script>
+    <script src="/js/account/accountDelete.js"></script>
   </body>
 </html>
