@@ -48,6 +48,38 @@ const hotel_search_view_detail_db = async (req, res) => {
   }
 };
 
+// covid api get
+const covid_api_get = async (req, res) => {
+  const COVID_API_URL = `https://corona-api.com/countries/`;
+  const countryCodeFromWeatherAPI = req.params.countryCode;
+  try {
+    const covidFetchGet = await fetch(
+      `${COVID_API_URL}${countryCodeFromWeatherAPI}`
+    );
+    const covidResponse = await covidFetchGet.json();
+    res.json(covidResponse);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// video api get
+const video_api_get = async (req, res) => {
+  const cityname = req.params.cityname;
+  const videoAPIBASEURL = `https://pixabay.com/api/videos/`;
+  try {
+    const videoFetched = await fetch(
+      `${videoAPIBASEURL}?key=${process.env.PIXABAY_VIDEO_KEY}&q=${cityname}`
+    );
+    const videoResponse = await videoFetched.json();
+    res.json(videoResponse);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   hotel_search_view_detail_db,
+  covid_api_get,
+  video_api_get,
 };

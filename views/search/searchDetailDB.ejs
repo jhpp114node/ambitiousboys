@@ -204,9 +204,17 @@
     </section>
 
     <section class="hotelSearched_detail_about_city">
-      <h2 class="hotelSearched_detail_about_city_title">
-        About <%=hotelDBSearchedDetail.hotelDatafromDB.city%>
-      </h2>
+      <div>
+        <img
+          class="pixabay_logo"
+          src="https://pixabay.com/static/img/logo_square.png"
+          alt="Video reference"
+        />
+        <small>The videos are from pixabay</small>
+        <h2 class="hotelSearched_detail_about_city_title">
+          About <%=hotelDBSearchedDetail.hotelDatafromDB.city%>
+        </h2>
+      </div>
       <div class="hotelSearched_detail_tab_container">
         <div class="hotelSearched_detail_tab_button_container">
           <button
@@ -215,13 +223,15 @@
           >
             Weather
           </button>
-          <button class="hotelSearched_detail_tab_btn">Covid</button>
+          <button class="hotelSearched_detail_tab_btn">Covid Data</button>
+
           <button
             class="hotelSearched_detail_tab_btn"
             id="hotelSearched_detail_tab_video"
             data-hotel-city-fullname="<%=hotelDBSearchedDetail.hotelDatafromDB.city%>"
+            data-hotel-id="<%=hotelDBSearchedDetail.hotelDatafromDB._id%>"
           >
-            Video of the City
+            Video of the City (From pixabay)
           </button>
         </div>
 
@@ -289,8 +299,111 @@
             </div>
           </div>
         </div>
+
+        <div class="hotelSearched_detail_tab_panel">
+          <div class="hotelSearched_detail_covid_header">
+            <h2 class="hotelSearched_detail_covid_countryName"></h2>
+            <small
+              class="hotelSearched_detail_covid_lastupdate"
+              data-cityname="<%=hotelDBSearchedDetail.hotelDatafromDB.city%>"
+              data-hotel-id="<%=hotelDBSearchedDetail.hotelDatafromDB._id%>"
+              data-country-code="<%=hotelDBSearchedDetail.weatherAPIResponse.sys.country%>"
+            ></small>
+          </div>
+          <div class="chart_data">
+            <canvas id="myChart" class="graph"></canvas>
+          </div>
+        </div>
+        <div class="hotelSearched_detail_tab_panel">
+          <video
+            class="hotelSearched_detail_cityVideo_frame"
+            src=""
+            loop
+            muted
+            type="video/mp4"
+            controls
+            preload="1"
+          ></video>
+          <div class="hotelSearched_detail_video_buttonContainer">
+            <button class="video_show_more_btn">Show More Videos</button>
+          </div>
+        </div>
       </div>
     </section>
+
+    <div class="modal" id="myModal">
+      <header>
+        <span class="close_modal_btn">&times;</span>
+        <p class="modal_img_counter"></p>
+      </header>
+      <i class="fas fa-chevron-circle-left modal-left"></i>
+      <main class="modal_image_container">
+        <% for (let i = 0; i <
+        hotelDBSearchedDetail.imagesFromS3ForDetail.length; i++) { %>
+        <img
+          class="modal_img"
+          src="<%=hotelDBSearchedDetail.imagesFromS3ForDetail[i]%>"
+          alt="user posted hotel images"
+          images-in-modal="<%=hotelDBSearchedDetail.imagesFromS3ForDetail[i]%>"
+        />
+        <% } %>
+      </main>
+      <i class="fas fa-chevron-circle-right modal-right"></i>
+    </div>
+
+    <div class="video_modal" id="videoModal">
+      <header>
+        <span class="close_video_modal_btn">&times;</span>
+        <main class="modal_video_container">
+          <video
+            class="modal_video"
+            src=""
+            loop
+            muted
+            type="video/mp4"
+            controls
+            preload="1"
+          ></video>
+        </main>
+        <ul class="modal_video_navigation"></ul>
+      </header>
+    </div>
     <script src="/js/root/dropdown.js" defer></script>
+    <script src="/js/search/searchDetailDBTab.js" defer></script>
+    <script src="/js/search/searchDetailDBImageModal.js" defer async></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    <script>
+      function initMap() {
+        let map;
+        let address = "<%=hotelDBSearchedDetail.hotelDatafromDB.address%>";
+        map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 14,
+        });
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode(
+          {
+            address: address,
+          },
+          (results, status) => {
+            if (status == google.maps.GeocoderStatus.OK) {
+              console.log("It got in OK Status");
+              console.log("GEO Location: ", results[0].geometry.location);
+              new google.maps.Marker({
+                position: results[0].geometry.location,
+                map: map,
+              });
+              map.setCenter(results[0].geometry.location);
+            } else {
+              console.log("Something is wrong on your map");
+            }
+          }
+        );
+      }
+    </script>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIYpSNFQeK5e5LluHsADjpRLnZeK78YKc&callback=initMap&libraries=&v=weekly"
+    ></script>
   </body>
 </html>
