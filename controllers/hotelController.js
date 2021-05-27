@@ -20,11 +20,34 @@ const hotel_search_index = async (req, res) => {
     const filteredData = hotelData.results.hotels.filter((eachHotel) => {
       return eachHotel.locationName.indexOf(fullCountryName) >= 0;
     });
-    console.log(filteredData);
+
+    // fetch data from database that the city is seattle and image is not null
+    const hotelDataFromDB = await Hotel.find({ city: cityname })
+      .where("imageUrls")
+      .ne(null)
+      .sort({ updatedAt: -1 });
+    // console.log(hotelDataFromDB);
+    // create a map key: hotel id and value is image buffer
+    const imageHashMap = new Map();
+    for (let i = 0; i < hotelDataFromDB.length; i++) {
+      // console.log(`${hotelDataFromDB[i].imageUrls[0]}`);
+      let param = {
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Key: `${hotelDataFromDB[i].imageUrls[0]}`,
+      };
+      let hotelImageS3Obj = await s3.s3.getObject(param).promise();
+      let hotelImageS3Body = hotelImageS3Obj.Body;
+      let buffer = Buffer.from(hotelImageS3Body);
+      let base64Data = buffer.toString("base64");
+      let imageDomFromS3 = "data:image/jpeg;base64," + base64Data;
+      imageHashMap.set(hotelDataFromDB[i]._id, imageDomFromS3);
+    }
     const renderDataObj = {
       searchedCity: cityname,
       apiGoogleMapGeoLocation: hotelData.results.locations[0],
       filteredData: filteredData,
+      hotelDataFromDB: hotelDataFromDB,
+      imageHashMap: imageHashMap,
     };
     res
       .status(200)
