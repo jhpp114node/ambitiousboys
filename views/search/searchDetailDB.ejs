@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hotel-BNB SearchDetailDB</title>
+    <!-- Fontawesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <!-- Date Picker -->
+    <link
+      rel="stylesheet"
+      href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/search/searchDetailDB.css" />
+    <script>
+      $(function () {
+        $(function () {
+          var hiddenDateFrom = $(".hiddenDateFrom");
+          var dateFormat = "mm/dd/yy",
+            from = $("#from")
+              .datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                numberOfMonths: 1,
+                minDate: 0,
+              })
+              .on("change", function () {
+                to.datepicker("option", "minDate", getDate(this));
+                hiddenDateFrom.value = from.value;
+              }),
+            to = $("#to")
+              .datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                numberOfMonths: 1,
+                minDate: 1,
+              })
+              .on("change", function () {
+                from.datepicker("option", "maxDate", getDate(this));
+              });
+
+          function getDate(element) {
+            var date;
+            try {
+              date = $.datepicker.parseDate(dateFormat, element.value);
+            } catch (error) {
+              date = null;
+            }
+
+            return date;
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <!-- Header -->
+    <%- include('../partials/header.ejs') %>
+    <header class="hotelSearched_detail_header">
+      <h2 class="hotelSearched_detail_header_hotelName">
+        <i class="fas fa-database"></i>
+        <%=hotelDBSearchedDetail.hotelDatafromDB.label%>
+      </h2>
+      <div class="hotelSearched_detail_header_contents">
+        <div class="hotelSearched_detail_header_basicInfo">
+          <i class="fas fa-star hotelSearched_detail_rating"></i>
+          <p class="hotelSearched_detail_hotelLocation">
+            <%=hotelDBSearchedDetail.hotelDatafromDB.full_city_name%>
+          </p>
+        </div>
+      </div>
+      <!-- Images -->
+      <section class="hotelSearched_detail_main_image_section">
+        <div class="hotelSearched_detail_main_image_container">
+          <div class="hotelDetail_main_image">
+            <img
+              class="hotelSearched_detail_big_image"
+              src="<%=hotelDBSearchedDetail.imagesFromS3ForDetail[0]%>"
+              alt="hotel main image from hotel database"
+            />
+          </div>
+          <!-- use default image if the number of images are not bigger than 5 -->
+          <div class="hotelSearched_detail_sub_image">
+            <% for (let i = 1; i < 5; i++) { %> <% if
+            (hotelDBSearchedDetail.imagesFromS3ForDetail[i]) { %>
+            <img
+              class="hotelSearched_detail_small_image"
+              src="<%=hotelDBSearchedDetail.imagesFromS3ForDetail[i]%>"
+              alt="hotel sub image"
+            />
+            <% } else { %>
+            <img
+              class="hotelSearched_detail_small_image"
+              src="https://images.unsplash.com/photo-1470290378698-263fa7ca60ab?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8"
+              alt="Default hotel images from Unsplash"
+            />
+            <% } %> <% } %> <% if
+            (hotelDBSearchedDetail.imagesFromS3ForDetail.length > 5) { %>
+            <button class="hotelSearched_detail_more_image_btn">
+              Show More
+            </button>
+            <% } %>
+          </div>
+        </div>
+      </section>
+    </header>
+
+    <section class="hotelSearched_detail_main">
+      <main class="hotelSearched_detail_main_hotelInfo">
+        <div class="hotelSearched_detail_main_booking_container">
+          <div class="hotelSearched_detail_booking_header">
+            <h2 class="hotelSearched_detail_header_title">
+              Hotel &nbsp;
+              <span class="hotelSearched_detail_header_subTitle"
+                >Information</span
+              >
+            </h2>
+            <img
+              class="hotelSearched_detail_header_image"
+              src="<%=hotelDBSearchedDetail.imagesFromS3ForDetail[0]%>"
+              alt="hotel Detail Image 1"
+            />
+            <h3 class="hotelSearched_detail_header_hotel_price">
+              $ will be updated in next version!
+            </h3>
+            <button
+              id="hotelSearched_detail_checkout-button"
+              class="hotelSearched_detail_book_btn"
+            >
+              Book It (Will be on next version)
+            </button>
+            <div class="hotelSearched_detail_summary">
+              <ul class="hotelSearched_detail_summary_details">
+                <li>
+                  <small
+                    >Selected Room <strong>single</strong> Price:
+                    <strong>$Not Available</strong></small
+                  >
+                </li>
+                <li>
+                  <small
+                    >Number of guest(s) <strong>1: </strong> Price:
+                    <strong>$Not Available</strong></small
+                  >
+                </li>
+              </ul>
+              <h3 class="hotelSearched_detail_summary_totalPrice">
+                There is no room info in Free API..
+              </h3>
+            </div>
+          </div>
+          <div class="hotelSearched_detail_hotel_info">
+            <div class="hotelSearched_detail_hotel_address">
+              <div class="hotelSearched_detail_address_info_container">
+                <h2>Hotel Address</h2>
+                <p class="hotel_address">
+                  <%=hotelDBSearchedDetail.hotelDatafromDB.address%>
+                </p>
+              </div>
+              <div class="hotelSearched_detail_city_info_container">
+                <h2>City Full Name</h2>
+                <p class="hotel_full_city_country">
+                  <%=hotelDBSearchedDetail.hotelDatafromDB.full_city_name%>
+                </p>
+              </div>
+            </div>
+            <div class="hotelSearched_Detail_checkin_checkout">
+              <div class="date_container">
+                <div class="date_container_from">
+                  <label for="from">From</label><br />
+                  <input
+                    readonly
+                    type="text"
+                    id="from"
+                    name="from"
+                    value="<%=hotelDBSearchedDetail.checkin_date%>"
+                  /><br /><br />
+                  <span class="checkDateValidation"></span>
+                </div>
+                <div class="date_container_to">
+                  <label for="to">To</label><br />
+                  <input
+                    readonly
+                    type="text"
+                    id="to"
+                    name="to"
+                    value="<%=hotelDBSearchedDetail.checkout_date%>"
+                  /><br /><br />
+                  <span class="checkDateValidation"></span>
+                </div>
+                <div id="map" style="width: 100%; height: 300px"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </section>
+
+    <section class="hotelSearched_detail_about_city">
+      <h2 class="hotelSearched_detail_about_city_title">
+        About <%=hotelDBSearchedDetail.hotelDatafromDB.city%>
+      </h2>
+      <div class="hotelSearched_detail_tab_container">
+        <div class="hotelSearched_detail_tab_button_container">
+          <button
+            class="hotelSearched_detail_tab_btn"
+            id="hotelSearched_detail_tab_btn_first"
+          >
+            Weather
+          </button>
+          <button class="hotelSearched_detail_tab_btn">Covid</button>
+          <button
+            class="hotelSearched_detail_tab_btn"
+            id="hotelSearched_detail_tab_video"
+            data-hotel-city-fullname="<%=hotelDBSearchedDetail.hotelDatafromDB.city%>"
+          >
+            Video of the City
+          </button>
+        </div>
+
+        <div
+          class="hotelSearched_detail_tab_panel"
+          id="hotelSearched_detail_panel_first"
+        >
+          <div class="hotelSearched_detail_weather_container">
+            <div class="hotelSearched_detail_weather_leftside">
+              <h3 class="hotelSearched_detail_weather_title">
+                Current Weather in City
+              </h3>
+              <h2 class="hotelSearched_detail_weather_hotel_cityCountry">
+                <%=hotelDBSearchedDetail.hotelDatafromDB.full_city_name%>
+              </h2>
+              <img
+                class="hotelSearched_detail_weather_left_icon"
+                src="http://openweathermap.org/img/w/<%=hotelDBSearchedDetail.weatherAPIResponse.weather[0].icon%>.png"
+                alt="current weather icon"
+              />
+              <p class="hotelSearched_detail_weather_left_description">
+                <%=hotelDBSearchedDetail.weatherAPIResponse.weather[0].description%>
+              </p>
+              <p class="hotelSearched_detail_weather_left_feelslike">
+                Feels like
+                <%=(hotelDBSearchedDetail.weatherAPIResponse.main.feels_like *
+                (9/5) - 459.67).toFixed(2)%>&#8457;
+              </p>
+            </div>
+            <div class="hotelSearched_detail_weather_rightside">
+              <p class="weather_current_temp">
+                Current Temperature(Kelvin):
+                <strong
+                  ><%=hotelDBSearchedDetail.weatherAPIResponse.main.temp%>&#8490;</strong
+                >
+              </p>
+              <p class="weather_current_temp_fahren">
+                Current Temperature(Fahrenheit):
+                <strong
+                  ><%=(hotelDBSearchedDetail.weatherAPIResponse.main.temp *
+                  (9/5) - 459.67).toFixed(2)%>&#8457;</strong
+                >
+              </p>
+              <p class="weather_current_temp_celsius">
+                Current Temperature(Celsius):
+                <strong
+                  ><%=(hotelDBSearchedDetail.weatherAPIResponse.main.temp -
+                  273.15).toFixed(2)%>&#8451;</strong
+                >
+              </p>
+              <div class="hotelSearched_detail_weather_wind">
+                <h3>Wind Speed</h3>
+                <i class="fas fa-wind"></i>&nbsp;
+                <strong
+                  ><%=hotelDBSearchedDetail.weatherAPIResponse.wind.speed%>mph</strong
+                >
+              </div>
+              <div class="hotelSearched_detail_weather_humid">
+                <h3>Humidity</h3>
+                <i class="fas fa-tint-slash"></i>&nbsp;
+                <strong
+                  ><%=hotelDBSearchedDetail.weatherAPIResponse.main.humidity%>%</strong
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="/js/root/dropdown.js" defer></script>
+  </body>
+</html>
