@@ -37,10 +37,12 @@ const HOTEL_SEARCH_ROUTE = require("./routes/Hotel.js");
 const HOTEL_POSTER_ROUTE = require("./routes/BecomePoster.js");
 const AUTH_ROUTE = require("./routes/Auth.js");
 const ACCOUNT_ROUTE = require("./routes/Account.js");
+const SEARCH_HOTEL_ROUTE = require("./routes/SearchHotel");
 app.use("/hotel", HOTEL_SEARCH_ROUTE);
 app.use("/post", HOTEL_POSTER_ROUTE);
 app.use("/auth", AUTH_ROUTE);
 app.use("/user", ACCOUNT_ROUTE);
+app.use("/search", SEARCH_HOTEL_ROUTE);
 // ROOT ROUTES ================
 
 app.get("/", (req, res) => {
@@ -48,7 +50,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/", (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const { location, checkin_date, checkout_date } = req.body;
   const trimLocation = trimCity(location);
   const hotelSearchKeyword = {
@@ -57,6 +59,7 @@ app.post("/", (req, res) => {
     checkout_date: checkout_date,
   };
   res.cookie("hotelSearchKeyword", hotelSearchKeyword);
+  console.log(req.cookies["hotelSearchKeyword"]);
   res.redirect(`/hotel/search/${trimLocation}`);
 });
 
