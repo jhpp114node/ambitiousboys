@@ -337,3 +337,262 @@ a:hover {
 .checkDateValidation {
   color: rgb(255, 75, 75);
 }
+
+.hotelSearched_detail_about_city {
+  width: 80%;
+  margin: 0 auto;
+  height: auto;
+}
+
+.hotelSearched_detail_tab_button_container {
+  height: auto;
+  display: flex;
+  width: 100%;
+}
+
+.hotelSearched_detail_tab_button_container button {
+  width: 33.33%;
+  height: 100%;
+  margin: 1rem 0rem;
+  padding: 1rem;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  font-size: 1.3rem;
+}
+
+.pixabay_logo {
+  width: 70px;
+  height: 60px;
+}
+
+.hotelSearched_detail_tab_panel {
+  padding: 1.5rem 1.5rem 1.5rem 1.5rem;
+  height: 460px;
+  background-color: rgb(251, 251, 251);
+}
+
+/* =========================================== */
+/* Weather API Style */
+.hotelSearched_detail_weather_container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+}
+
+.hotelSearched_detail_weather_leftside {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 2rem;
+  align-items: center;
+  padding: 1rem;
+  width: 30%;
+  -moz-box-shadow: inset 0 0 10px #b4d1ee;
+  -webkit-box-shadow: inset 0 0 10px #b4d1ee;
+  box-shadow: inset 0 0 10px #b4d1ee;
+  background-color: rgb(251, 251, 251);
+}
+
+.hotelSearched_detail_weather_leftside h3,
+.hotelSearched_detail_weather_leftside p {
+  color: rgb(87, 87, 87);
+}
+.hotelSearched_detail_weather_leftside h2 {
+  color: rgb(30, 144, 255);
+}
+
+.hotelSearched_detail_weather_rightside {
+  width: 60%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  border-radius: 2rem;
+  padding: 1rem;
+  -moz-box-shadow: inset 0 0 10px #b4d1ee;
+  -webkit-box-shadow: inset 0 0 10px #b4d1ee;
+  box-shadow: inset 0 0 10px #b4d1ee;
+  background-color: rgb(251, 251, 251);
+}
+
+.hotelSearched_detail_weather_rightside p,
+.hotelSearched_detail_weather_rightside h3,
+.hotelSearched_detail_weather_wind {
+  color: rgb(87, 87, 87);
+}
+
+.hotelSearched_detail_weather_rightside p {
+  font-size: 1.2rem;
+  letter-spacing: 0.2rem;
+}
+
+.hotelSearched_detail_weather_left_icon {
+  width: 120px;
+  height: 120px;
+}
+
+.fa-wind {
+  color: blue;
+  font-size: 1.4rem;
+}
+
+.hotelSearched_detail_weather_humid {
+  color: rgb(87, 87, 87);
+}
+
+.fa-tint-slash {
+  color: orange;
+  font-size: 1.4rem;
+}
+
+/* ================================= */
+/* Covid */
+.graph {
+  width: 90% !important;
+  height: 390px !important;
+}
+
+/* ================================= */
+/* Video */
+.hotelSearched_detail_cityVideo_frame {
+  width: 1200px;
+  height: 400px;
+}
+
+.video_show_more_btn {
+  width: 160px;
+  height: 50px;
+  outline: none;
+  border-radius: 2rem;
+  cursor: pointer;
+  border: 1px solid #589fe6;
+  background-color: rgb(245, 245, 245);
+  color: #589fe6;
+  transition: all ease-in-out 0.2s;
+  font-weight: bold;
+}
+
+.video_show_more_btn:hover {
+  border: 1px solid #589fe6;
+  color: #589fe6;
+  background-color: black;
+  font-weight: bold;
+}
+
+/* =================================== */
+/* Video Modal */
+.video_modal {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding-top: 6rem;
+  background-color: rgba(26, 26, 26, 0.9);
+  z-index: 2;
+}
+
+.close_video_modal_btn {
+  position: absolute;
+  color: rgb(230, 230, 230);
+  font-size: 3rem;
+  top: 2rem;
+  left: 4rem;
+  cursor: pointer;
+}
+
+.modal_video_container {
+  margin: 0 auto;
+  width: 90%;
+  align-items: center;
+  text-align: center;
+}
+
+.modal_video {
+  width: 80%;
+  height: 550px;
+  margin: 0 auto;
+}
+
+.modal_video_navigation {
+  position: absolute;
+  bottom: 5%;
+  left: 20%;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.modal_video_navigation video {
+  margin: 1rem;
+  cursor: pointer;
+  border-radius: 2rem;
+  transition: all ease-in-out 0.2s;
+  border: 1px solid gray;
+}
+
+.modal_video_navigation video:hover {
+  width: 210px !important;
+}
+
+/* ================================== */
+/* Regular Modal */
+.modal {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding-top: 10rem;
+  background-color: rgb(243, 243, 243);
+  background-color: rgba(243, 243, 243, 0.9);
+  z-index: 2;
+}
+
+.close_modal_btn {
+  position: absolute;
+  color: rgb(87, 87, 87);
+  font-size: 3rem;
+  top: 5rem;
+  left: 5rem;
+  cursor: pointer;
+}
+
+.close_modal_text {
+  font-size: 1rem;
+}
+.modal_image_container {
+  margin: 0 auto;
+  width: 80%;
+  height: 80%;
+}
+
+.modal_image_container > img {
+  display: block;
+  margin: 0 auto;
+  width: 80%;
+  height: 100%;
+  border-radius: 2rem;
+}
+
+.modal-left {
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  font-size: 2rem;
+  color: rgb(59, 59, 59);
+  cursor: pointer;
+}
+
+.modal-right {
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  font-size: 2rem;
+  color: rgb(61, 61, 61);
+  cursor: pointer;
+}
