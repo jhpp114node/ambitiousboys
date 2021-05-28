@@ -6,6 +6,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const methodOverride = require("method-override");
 var passport = require("passport");
+const Hotel = require("./models/hotel");
 require("dotenv").config();
 
 const app = express();
@@ -43,6 +44,7 @@ app.use("/post", HOTEL_POSTER_ROUTE);
 app.use("/auth", AUTH_ROUTE);
 app.use("/user", ACCOUNT_ROUTE);
 app.use("/search", SEARCH_HOTEL_ROUTE);
+
 // ROOT ROUTES ================
 
 app.get("/", (req, res) => {
@@ -61,6 +63,20 @@ app.post("/", (req, res) => {
   res.cookie("hotelSearchKeyword", hotelSearchKeyword);
   console.log(req.cookies["hotelSearchKeyword"]);
   res.redirect(`/hotel/search/${trimLocation}`);
+});
+
+app.get("*", async (req, res) => {
+  try {
+    const groupByCity = await Hotel.find().distinct("city");
+    const errorRecommendCity = {
+      groupByCity: groupByCity,
+    };
+    res
+      .status(404)
+      .render("error/error", { errorRecommendCity: errorRecommendCity });
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 app.listen(PORT, () => {

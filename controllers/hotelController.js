@@ -54,6 +54,8 @@ const hotel_search_index = async (req, res) => {
       .render("search/search.ejs", { renderDataObj: renderDataObj });
   } catch (error) {
     console.error(error);
+    // hit invalid api requests
+    res.status(301).redirect("/dfisdlfjlkzdf");
   }
 };
 // blog_detail

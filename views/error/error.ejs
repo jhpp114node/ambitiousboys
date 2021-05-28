@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Error Page</title>
+    <link rel="stylesheet" href="/css/error/error.css" />
+  </head>
+  <body>
+    <div id="cannotfind">
+      <div class="leftdiv">
+        <h1 class="error">Oops!</h1>
+        <h2 style="text-align: center">
+          We can't seem to find the page you're looking for.
+        </h2>
+        <h4 style="text-align: center">Error code: 404</h4>
+        <ul class="links">
+          <li>Here are some helpful links instead:</li>
+          <li>
+            <a href="/">Home</a>
+          </li>
+        </ul>
+        <!-- Div for recommended city -->
+        <hr class="error_divider" />
+        <div class="recommended_city">
+          <h2>Here are popular cities you can view</h2>
+          <ul>
+            <% errorRecommendCity.groupByCity.forEach((eachHotelCity) => { %>
+            <li>
+              <a href="/hotel/search/<%=eachHotelCity%>"
+                >Let's view hotels in <%=eachHotelCity%></a
+              >
+            </li>
+            <% }) %>
+          </ul>
+        </div>
+      </div>
+      <div class="rightdiv">
+        <img
+          class="img"
+          src="https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzF8fDQwNCUyMGVycm9yfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+        />
+      </div>
+    </div>
+  </body>
+</html>
